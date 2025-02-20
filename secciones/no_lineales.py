@@ -43,7 +43,6 @@ def mostrar():
     start_date = st.date_input("Fecha de Inicio", min_date, min_value=min_date, max_value=max_date)
     end_date = st.date_input("Fecha de Fin", max_date, min_value=min_date, max_value=max_date)
 
-    feature_names = df_final.columns if len(df_final.columns) == len(importances) else np.arange(len(importances))
 
 
     def plot_predictions(df1, column_selector, start_date, end_date, model_selector, models):
@@ -52,6 +51,8 @@ def mostrar():
             globals()[nombre] = np.load(f'Datos/Arreglos/{nombre}.npy')
 
         df_final = pd.read_excel('Datos/df_final.xlsx')
+        feature_names = df_final.columns if len(df_final.columns) == len(importances) else np.arange(len(importances))
+
 
         col = column_selector
         start_date = pd.Timestamp(start_date)

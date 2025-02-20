@@ -1,5 +1,5 @@
 import streamlit as st
-from Secciones import inicio, lineales, no_lineales, tabnet, propuesta  # Importar las secciones de la carpeta "pages"
+from secciones import inicio, lineales, no_lineales, tabnet, propuesta  # Importar las secciones de la carpeta "pages"
 
 st.sidebar.title("Índice")
 sections = ["Inicio", "Regresores Clásicos Lineales", "Regresores Clásicos No Lineales", "TabNet" "Propuesta"]

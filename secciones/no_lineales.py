@@ -10,14 +10,18 @@ def mostrar():
     modelos_path = "Modelos"
 
     # Lista de modelos no lineales
-    modelos_no_lineales = ["RandomForest", "GradientBoosting", "NeuralNetwork", "GaussianProcessRegressor", "GaussianProcessRegressor_Matern"]
 
-    # Cargar solo los modelos no lineales en un diccionario
+    modelos_path = "Modelos"
+
+    # Obtener todos los archivos .joblib en la carpeta
+    model_files = [f for f in os.listdir(modelos_path) if f.endswith(".joblib")]
+
+    # Cargar todos los modelos en un diccionario
     models = {}
-    for model_name in modelos_no_lineales:
-        file_path = os.path.join(modelos_path, model_name + ".joblib")
-        if os.path.exists(file_path):
-            models[model_name] = joblib.load(file_path)
+    for file in model_files:
+        file_path = os.path.join(modelos_path, file)
+        model_name = file.replace(".joblib", "")  # Nombre del modelo sin extensión
+        models[model_name] = joblib.load(file_path)
 
     # Lista de columnas de fecha disponibles
     fecha_columns = [

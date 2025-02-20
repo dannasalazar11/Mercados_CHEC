@@ -22,7 +22,7 @@ def mostrar():
 
     # 📌 Selección de modelo en la barra lateral
     st.header("⚙️ Configuración")
-    model_selector = st.selectbox("🎯 Selecciona el modelo", list(models.keys()))
+    model_selector = st.selectbox("🎯 Selecciona el modelo", ['ElasticNet', 'Lasso'])
 
     # Mostrar la descripción del modelo seleccionado
     st.info(model_descriptions.get(model_selector, "Modelo sin descripción disponible."))

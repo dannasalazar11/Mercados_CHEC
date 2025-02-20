@@ -45,21 +45,58 @@ def mostrar():
         plot_predictions(df1, column_selector, start_date, end_date, model_selector, models)
 
 # Función para graficar predicciones
-def plot_predictions(df1, column_selector, start_date, end_date, model_selector, models):
-    st.write(f"Generando predicción con el modelo {model_selector}...")
-
-    # Filtrar datos
-    filtered_df = df1[(df1[column_selector] >= pd.Timestamp(start_date)) & (df1[column_selector] <= pd.Timestamp(end_date))]
-
-    if filtered_df.empty:
-        st.warning("No hay datos en el rango de fechas seleccionado.")
-        return
-
-    # Generar gráfica (Ejemplo simple)
-    fig, ax = plt.subplots()
-    ax.plot(filtered_df[column_selector], np.random.randn(len(filtered_df)), label="Predicción", color="red")
-    ax.set_xlabel("Fecha")
-    ax.set_ylabel("Valor")
-    ax.set_title("Predicción vs Real")
-    ax.legend()
-    st.pyplot(fig)
+def plot_predictions(column_selector, start_date, end_date, model_selector):
+        col = column_selector
+        start_date = pd.Timestamp(start_date)
+        end_date = pd.Timestamp(end_date)
+        model_name = model_selector
+    
+        if start_date and end_date and model_name:
+            # Filtrar datos en el período seleccionado
+            filtered_df = df1[(df1[col] >= start_date) & (df1[col] <= end_date)]
+            filtered_indices = list(set(test_idx) & set(filtered_df.index))
+            filtered_indices.sort()
+    
+            if len(filtered_indices) == 0:
+                st.warning("No hay datos en el rango de fechas seleccionado.")
+                return
+    
+            Xf = X[filtered_indices]
+            yf = y[filtered_indices]
+            model = models[model_name]
+            y_pred = model.predict(Xf)
+    
+            # Alinear las predicciones con las fechas correctas
+            y_pred_df = pd.DataFrame(y_pred, index=filtered_df.loc[filtered_indices, col], columns=["Predicción"])
+    
+            # Crear la figura con dos subgráficas (una al lado de la otra)
+            fig, axes = plt.subplots(1, 2, figsize=(15, 5))
+            fig.suptitle(f"{model_name}", fontsize=16)
+    
+            # Primera gráfica: Predicciones vs serie real
+            axes[0].plot(filtered_df.loc[filtered_indices, col], yf, label="Real", color="blue", linestyle="dashed")
+            axes[0].plot(y_pred_df, label="Predicción", color="red")
+            axes[0].set_xlabel("Fecha")
+            axes[0].set_ylabel("Valor")
+            axes[0].set_title("Predicción vs Real")
+            axes[0].legend()
+            axes[0].tick_params(axis='x', rotation=45)
+    
+            # Segunda gráfica: Coeficientes del modelo
+            if model_name == "ElasticNet":
+                coef = model[-1].coef_
+            else:
+                coef = model.coef_
+    
+            feature_names = df_final.columns if len(df_final.columns) == len(coef) else np.arange(len(coef))  # Nombres de características
+    
+            axes[1].barh(feature_names, coef, color="purple")
+            axes[1].set_xlabel("Valor del coeficiente")
+            axes[1].set_ylabel("Características")
+            axes[1].set_title("Coeficientes del modelo")
+    
+            plt.tight_layout()
+            st.pyplot(fig)  # Mostrar en Streamlit
+    
+        else:
+            st.error("Modelo no encontrado.")

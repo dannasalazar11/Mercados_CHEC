@@ -14,15 +14,15 @@ def main():
         Convocatorias_SICEP = pd.read_excel('Datos/Convocatorias_SICEP.xlsx',na_values="-")
         Productos_Adj_SICEP = pd.read_excel('Datos/Productos_Adj_SICEP.xlsx',na_values="-")
 
-        st.subtitle("Selecciona una base de datos")
+        st.header("Selecciona una base de datos")
         option = st.radio("Elige:", ["Convocatorias_SICEP", "Productos_Adj_SICEP"])
         
         if option == "Convocatorias_SICEP":
-            st.title("Visualización de la Base de Datos Convocatorias_SICEP")
+            st.subheader("Visualización de la Base de Datos Convocatorias_SICEP")
             st.dataframe(Convocatorias_SICEP)
         
         elif option == "Productos_Adj_SICEP":
-            st.title("Visualización de la Base de Datos Productos_Adj_SICEP")
+            st.subheader("Visualización de la Base de Datos Productos_Adj_SICEP")
             st.dataframe(Productos_Adj_SICEP)
         
     

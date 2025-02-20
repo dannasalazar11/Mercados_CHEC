@@ -50,17 +50,13 @@ if choice == "Inicio":
     inicio.mostrar()
 
 elif choice == "Regresores Clásicos Lineales":
-    st.info("Sección de regresores clásicos lineales.")
     lineales.mostrar()
 
 elif choice == "Regresores Clásicos No Lineales":
-    st.info("Sección de regresores clásicos no lineales.")
     no_lineales.mostrar()
 
 elif choice == "TabNet":
-    st.info("Sección de TabNet para modelos de predicción avanzados.")
     tabnet.mostrar()
 
 elif choice == "Propuesta":
-    st.info("Sección con la propuesta de modelo.")
     propuesta.mostrar()

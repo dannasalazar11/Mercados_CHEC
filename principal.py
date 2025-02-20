@@ -51,7 +51,7 @@ def main():
             models[model_name] = joblib.load(file_path)
         
         # Mostrar los modelos cargados
-        st.write("Modelos cargados:", list(models.keys()))
+        st.write(f"Modelos cargados: {list(models.keys())}")
     
     elif choice == "Datos":
         st.title("Visualización de Datos")

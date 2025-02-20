@@ -1,6 +1,7 @@
 import streamlit as st
 import pandas as pd
 import joblib
+import os
 
 def main():
     st.set_page_config(page_title="Navegación por secciones", layout="wide")

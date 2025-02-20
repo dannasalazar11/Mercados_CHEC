@@ -1,5 +1,8 @@
 import streamlit as st
 from secciones import inicio, lineales, no_lineales, tabnet, propuesta  # Importar las secciones de la carpeta "pages"
+from sklearn.metrics import r2_score
+from pytorch_tabnet.tab_model import TabNetRegressor
+import numpy as np
 
 def my_r2_score_fn(y_pred, y_true):
     total_variance = torch.var(y_true, unbiased=False)

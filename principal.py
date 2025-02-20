@@ -1,4 +1,5 @@
 import streamlit as st
+import pandas as pd
 
 def main():
     st.set_page_config(page_title="Navegación por secciones", layout="wide")
@@ -8,8 +9,22 @@ def main():
     choice = st.sidebar.radio("Selecciona una sección", sections)
     
     if choice == "Inicio":
-        st.title("Bienvenido a la Aplicación")
-        st.write("Esta es la sección de inicio donde puedes ver una introducción general.")
+        st.title("Bases de Datos")
+        
+        Convocatorias_SICEP = pd.read_excel('/Datos/Convocatorias_SICEP.xlsx',na_values="-")
+        Productos_Adj_SICEP = pd.read_excel('Datos/Productos_Adj_SICEP.xlsx',na_values="-")
+
+        st.sidebar.title("Selecciona una base de datos")
+        option = st.sidebar.radio("Elige:", ["Convocatorias_SICEP", "Productos_Adj_SICEP"])
+        
+        if option == "Convocatorias_SICEP":
+            st.title("Visualización de la Base de Datos Convocatorias_SICEP")
+            st.dataframe(Convocatorias_SICEP)
+        
+        elif option == "Productos_Adj_SICEP":
+            st.title("Visualización de la Base de Datos Productos_Adj_SICEP")
+            st.dataframe(Productos_Adj_SICEP)
+        
     
     elif choice == "Acerca de":
         st.title("Acerca de")

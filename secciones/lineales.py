@@ -21,8 +21,8 @@ def mostrar():
     }
 
     # 📌 Selección de modelo en la barra lateral
-    st.sidebar.header("⚙️ Configuración")
-    model_selector = st.sidebar.selectbox("🎯 Selecciona el modelo", list(models.keys()))
+    st.header("⚙️ Configuración")
+    model_selector = st.selectbox("🎯 Selecciona el modelo", list(models.keys()))
 
     # Mostrar la descripción del modelo seleccionado
     st.info(model_descriptions.get(model_selector, "Modelo sin descripción disponible."))
@@ -39,18 +39,18 @@ def mostrar():
     df1[fecha_columns] = df1[fecha_columns].apply(pd.to_datetime, errors='coerce')
 
     # 📌 Selección de columna de fecha
-    column_selector = st.sidebar.selectbox("📅 Selecciona la columna de fecha", fecha_columns)
+    column_selector = st.selectbox("📅 Selecciona la columna de fecha", fecha_columns)
 
     # 📌 Obtener el rango de fechas para la columna seleccionada
     min_date = df1[column_selector].min()
     max_date = df1[column_selector].max()
 
     # 📌 Selección de rango de fechas
-    start_date = st.sidebar.date_input("📆 Fecha de Inicio", min_date, min_value=min_date, max_value=max_date)
-    end_date = st.sidebar.date_input("📆 Fecha de Fin", max_date, min_value=min_date, max_value=max_date)
+    start_date = st.date_input("📆 Fecha de Inicio", min_date, min_value=min_date, max_value=max_date)
+    end_date = st.date_input("📆 Fecha de Fin", max_date, min_value=min_date, max_value=max_date)
 
     # 📌 Botón para generar la gráfica
-    if st.sidebar.button("📈 Generar Gráfica"):
+    if st.button("📈 Generar Gráfica"):
         plot_predictions(df1, column_selector, start_date, end_date, model_selector, models)
 
 # 📊 Función para graficar predicciones

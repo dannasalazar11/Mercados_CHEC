@@ -113,6 +113,7 @@ def mostrar():
                 length_scales = [length_scales]
 
             # Crear el barplot
+            feature_names = df_final.columns 
             axes[1].bar(feature_names, 1/length_scales/(np.max( 1/length_scales)), color='blue')
             axes[1].tick_params(axis='x', rotation=90)
             axes[1].set_xlabel('Características')
@@ -137,7 +138,7 @@ def mostrar():
             if hasattr(model, "feature_importances_"):  # RandomForest y GradientBoosting
                 df_final = pd.read_excel('Datos/df_final.xlsx')
                 importances = model.feature_importances_
-                feature_names = df_final.columns if len(df_final.columns) == len(importances) else np.arange(len(importances))
+                feature_names = df_final.columns 
                 axes[1].barh(feature_names, importances, color="green")
                 axes[1].set_xlabel("Importancia")
                 axes[1].set_ylabel("Características")

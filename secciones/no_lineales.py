@@ -103,7 +103,7 @@ def mostrar():
             plt.plot(filtered_df.loc[filtered_indices, col], y_pred, label="Predicción", color="red")
             plt.xlabel("Fecha")
             plt.ylabel("Valor")
-            plt.title("📉 Predicción con Incertidumbre")
+            plt.title("Predicción con Incertidumbre")
             plt.legend()
             plt.xticks(rotation=45)
             st.pyplot(plt)
@@ -118,7 +118,7 @@ def mostrar():
             plt.bar(feature_names, 1/length_scales / np.max(1/length_scales), color='blue')
             plt.xticks(rotation=90)
             plt.xlabel('Características')
-            plt.title("📏 Barplot de Length Scale Resultante")
+            plt.title("Barplot de Length Scale Resultante")
             st.pyplot(plt)
 
         # 📊 **Gráfico 4: Importancia de Características**
@@ -129,7 +129,7 @@ def mostrar():
             plt.barh(feature_names, importances, color="green")
             plt.xlabel("Importancia")
             plt.ylabel("Características")
-            plt.title(f"🟢 Importancia de Características ({model_name})")
+            plt.title(f"Importancia de Características ({model_name})")
             st.pyplot(plt)
 
     # Botón para generar la gráfica

@@ -29,10 +29,10 @@ class CustomTabNetRegressor(TabNetRegressor):
             output, _ = self.forward(X)
         return output.cpu().numpy()
 
-# Cargar el modelo
+@st.cache_resource
 def load_model():
     model_path = "Modelos/Best_model.pth"  # Ruta del modelo guardado
-    model = torch.load(model_path, weights_only=False)  # Cargar el modelo
+    model = torch.load(model_path, map_location=torch.device('cpu'))  # Cargar en CPU
     model.eval()  # Poner en modo evaluación
     return model
 

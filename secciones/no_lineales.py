@@ -14,6 +14,15 @@ def mostrar():
     # Lista de modelos no lineales
     modelos_no_lineales = ["RandomForest", "GradientBoosting", "NeuralNetwork", "GaussianProcessRegressor", "GaussianProcessRegressor_Matern"]
 
+    # Diccionario con descripciones de los modelos
+    model_descriptions = {
+        "RandomForest": "🌲 **Random Forest:** Algoritmo basado en múltiples árboles de decisión. Utiliza bagging para mejorar la precisión y reducir el sobreajuste.",
+        "GradientBoosting": "🚀 **Gradient Boosting:** Modelo basado en árboles que construye secuencialmente modelos más fuertes corrigiendo los errores de los anteriores.",
+        "NeuralNetwork": "🧠 **Red Neuronal:** Modelo Secuencial con capas densas, activaciones ReLU y optimizador Adam. Diseñado para capturar patrones complejos en los datos.",
+        "GaussianProcessRegressor": "📈 **Gaussian Process (RBF Kernel):** Método bayesiano para la regresión que mide la relación entre datos usando el kernel Radial Basis Function (RBF).",
+        "GaussianProcessRegressor_Matern": "📊 **Gaussian Process (Matern Kernel):** Variante del Gaussian Process que usa el kernel Matern, útil para datos con estructuras más complejas y suavidad ajustable."
+    }
+
     # Cargar solo los modelos no lineales en un diccionario
     models = {}
     for model_name in modelos_no_lineales:
@@ -23,6 +32,9 @@ def mostrar():
 
     # Selección de modelo
     model_selector = st.selectbox("🎯 Selecciona el modelo", list(models.keys()))
+
+    # Mostrar la descripción del modelo seleccionado
+    st.info(model_descriptions[model_selector])
 
     # Lista de columnas de fecha disponibles
     fecha_columns = [
@@ -71,13 +83,10 @@ def mostrar():
         model = models[model_name]
         y_pred = model.predict(Xf)
 
-        # **Alinear las predicciones con las fechas correctas**
-        y_pred_df = pd.DataFrame(y_pred, index=filtered_df.loc[filtered_indices, col], columns=["Predicción"])
-
-        # 📈 **Gráfico 1: Predicción vs Real**
+        # **Gráfico 1: Predicción vs Real**
         plt.figure(figsize=(10, 5))
         plt.plot(filtered_df.loc[filtered_indices, col], yf, label="Real", color="blue", linestyle="dashed")
-        plt.plot(y_pred_df, label="Predicción", color="red")
+        plt.plot(filtered_df.loc[filtered_indices, col], y_pred, label="Predicción", color="red")
         plt.xlabel("Fecha")
         plt.ylabel("Valor")
         plt.title(f"📊 Predicción vs Real ({model_name})")
@@ -89,9 +98,9 @@ def mostrar():
         if model_name in ["GaussianProcessRegressor", "GaussianProcessRegressor_Matern"]:
             plt.figure(figsize=(10, 5))
             y_std = np.sqrt(model.predict(Xf, return_std=True)[1])
-            plt.fill_between(filtered_df.loc[filtered_indices, col], y_pred_df["Predicción"] - y_std, y_pred_df["Predicción"] + y_std, alpha=0.3, color="red", label='Incertidumbre')
+            plt.fill_between(filtered_df.loc[filtered_indices, col], y_pred - y_std, y_pred + y_std, alpha=0.3, color="red", label='Incertidumbre')
             plt.plot(filtered_df.loc[filtered_indices, col], yf, label="Real", color="blue", linestyle="dashed")
-            plt.plot(y_pred_df, label="Predicción", color="red")
+            plt.plot(filtered_df.loc[filtered_indices, col], y_pred, label="Predicción", color="red")
             plt.xlabel("Fecha")
             plt.ylabel("Valor")
             plt.title("📉 Predicción con Incertidumbre")
@@ -112,7 +121,7 @@ def mostrar():
             plt.title("📏 Barplot de Length Scale Resultante")
             st.pyplot(plt)
 
-        # 📊 **Gráfico 4: Importancia de Características (Solo para modelos con feature_importances_)**
+        # 📊 **Gráfico 4: Importancia de Características**
         if hasattr(model, "feature_importances_"):
             importances = model.feature_importances_
             feature_names = df_final.columns

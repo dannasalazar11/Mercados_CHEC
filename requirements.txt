@@ -3,3 +3,4 @@ joblib
 scikit-learn
 keras
 tensorflow
+matplotlib

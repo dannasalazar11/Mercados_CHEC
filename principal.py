@@ -88,7 +88,7 @@ def regresores_clasicos():
         end_date = pd.Timestamp(end_date)
         model_name = model_selector
     
-        if start_date and end_date and model_name in models:
+        if start_date and end_date and model_name:
             # Filtrar datos en el período seleccionado
             filtered_df = df1[(df1[col] >= start_date) & (df1[col] <= end_date)]
             filtered_indices = list(set(test_idx) & set(filtered_df.index))

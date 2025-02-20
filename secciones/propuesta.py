@@ -1,10 +1,6 @@
 import streamlit as st
 
 def mostrar():
-
-    # Configuración de la página
-    st.set_page_config(page_title="Predicción Inteligente de Precios", layout="wide")
-
     # Título del Proyecto
     st.title("\U0001F4C8 Propuesta: Predicción Inteligente de Precios por Producto en Convocatorias de Compra de Energía")
 

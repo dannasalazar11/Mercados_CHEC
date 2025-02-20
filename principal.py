@@ -1,15 +1,17 @@
 import streamlit as st
-from secciones import inicio, lineales, no_lineales, tabnet, propuesta  # Importar las secciones de la carpeta "pages"
+import torch
+from secciones import inicio, lineales, no_lineales, tabnet, propuesta  # Importar las secciones
 from sklearn.metrics import r2_score
 from pytorch_tabnet.tab_model import TabNetRegressor
 import numpy as np
 
+# 📌 Función personalizada de R²
 def my_r2_score_fn(y_pred, y_true):
     total_variance = torch.var(y_true, unbiased=False)
     unexplained_variance = torch.mean((y_true - y_pred) ** 2)
-    r2_score = unexplained_variance / total_variance
-    return r2_score
+    return 1 - (unexplained_variance / total_variance)
 
+# 📌 Clase personalizada de TabNet
 class CustomTabNetRegressor(TabNetRegressor):
     def __init__(self, *args, **kwargs):
         super(CustomTabNetRegressor, self).__init__(*args, **kwargs)
@@ -28,21 +30,38 @@ class CustomTabNetRegressor(TabNetRegressor):
             output, _ = self.forward(X)
         return output.cpu().numpy()
 
-st.sidebar.title("Índice")
-sections = ["Inicio", "Regresores Clásicos Lineales", "Regresores Clásicos No Lineales", "TabNet", "Propuesta"]
-choice = st.sidebar.radio("Selecciona una sección", sections)
+# 📌 Configuración de la página
+st.set_page_config(page_title="📊 Predicción de Modelos", layout="wide")
 
+# 📌 Sidebar con iconos y navegación
+st.sidebar.header("📌 Índice de Secciones")
+sections = {
+    "Inicio": "🏠 Inicio",
+    "Regresores Clásicos Lineales": "📈 Regresores Lineales",
+    "Regresores Clásicos No Lineales": "🌲 Regresores No Lineales",
+    "TabNet": "🔬 TabNet",
+    "Propuesta": "💡 Propuesta"
+}
+
+choice = st.sidebar.radio("🔎 Selecciona una sección", list(sections.keys()), format_func=lambda x: sections[x])
+
+# 📌 Mostrar la sección seleccionada
 if choice == "Inicio":
+    st.success("🏠 Bienvenido a la aplicación. Selecciona una sección en el menú lateral para comenzar.")
     inicio.mostrar()
 
 elif choice == "Regresores Clásicos Lineales":
+    st.info("📈 Sección de regresores clásicos lineales.")
     lineales.mostrar()
 
 elif choice == "Regresores Clásicos No Lineales":
+    st.info("🌲 Sección de regresores clásicos no lineales.")
     no_lineales.mostrar()
 
 elif choice == "TabNet":
+    st.info("🔬 Sección de TabNet para modelos de predicción avanzados.")
     tabnet.mostrar()
 
 elif choice == "Propuesta":
+    st.info("💡 Sección con la propuesta de modelo.")
     propuesta.mostrar()

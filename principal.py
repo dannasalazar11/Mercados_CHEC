@@ -76,7 +76,8 @@ def regresores_clasicos():
 
     
     # Selección de modelo
-    model_selector = st.selectbox("Selecciona el modelo", modelos_lineales)
+    model_selector = st.selectbox("Selecciona el modelo", list(models.keys()))
+
     
     # Botón para generar la gráfica
     generate_button = st.button("Generar Gráfica")

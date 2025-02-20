@@ -16,8 +16,6 @@ def mostrar():
 
     # 📌 Diccionario de descripciones de modelos
     model_descriptions = {
-        "LinearRegression": "📏 **Regresión Lineal:** Modelo simple que ajusta una línea recta para minimizar la diferencia entre los valores reales y predichos.",
-        "Ridge": "🏋️‍♂️ **Ridge Regression:** Variante de la regresión lineal con regularización L2 para evitar el sobreajuste.",
         "Lasso": "🔪 **Lasso Regression:** Regresión lineal con regularización L1, capaz de reducir coeficientes a cero y realizar selección de características.",
         "ElasticNet": "🔗 **Elastic Net:** Combinación de Ridge y Lasso que permite un equilibrio entre regularización L1 y L2.",
     }

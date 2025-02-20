@@ -2,12 +2,13 @@ import streamlit as st
 import pandas as pd
 import joblib
 import os
+import numpy as np
 
 def main():
     st.set_page_config(page_title="Navegación por secciones", layout="wide")
     
     st.sidebar.title("Índice")
-    sections = ["Inicio", "clasicos", "tabnet", "propuesta"]
+    sections = ["Inicio", "Regresores Clásicos", "tabnet", "propuesta"]
     choice = st.sidebar.radio("Selecciona una sección", sections)
     
     if choice == "Inicio":
@@ -33,7 +34,7 @@ def main():
         Xdata = pd.read_excel('Datos/df_final.xlsx')
         st.dataframe(Xdata)
     
-    elif choice == "clasicos":
+    elif choice == "Regresores Clásicos":
         st.title("Modelos de Predicción Clásicos")
         st.write("Aquí puedes encontrar información sobre esta aplicación y su propósito.")
 
@@ -52,6 +53,35 @@ def main():
         
         # Mostrar los modelos cargados
         st.write(f"Modelos cargados: {list(models.keys())}")
+
+        st.header("Regresores Clásicos Lineales")
+
+        # Lista de modelos lineales sin SVR
+        modelos_lineales = ["ElasticNet", "Lasso"]
+
+        fecha_columns = [
+        'Fecha Actualización Estado Convocatoria', 'Inicio Periodo Contratar',
+        'Fin Periodo Contratar', 'Fecha Publicacion Aviso',
+        'Fecha Pliegos Para Consulta', 'Fecha Pliegos Definitivos',
+        'Fecha Limite Recepción Ofertas', 'Fecha Audiencia Pública'
+        ]
+
+        # base de datos que vamos a trabajar
+        X = np.load('Datos/X.npy')
+
+        st.write(f"{X.shape}")
+
+        
+        
+        # df1=pd.read_excel('Datos/df_imputado_original.xlsx')
+        # df1 = df1[df1["Estado Convocatoria"] != "Cancelada"]
+        # df1 = df1[df1["Estado Convocatoria"] != "Cerrada y desierta"]
+        # df1 = df1[df1["Estado Convocatoria"] != "Abierta"]
+        # df1=df1.iloc[ind]
+        # df1.reset_index(drop=True, inplace=True)
+
+
+        
     
     elif choice == "Datos":
         st.title("Visualización de Datos")

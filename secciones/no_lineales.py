@@ -94,7 +94,7 @@ def mostrar():
         
         elif model_name == "GaussianProcessRegressor" or model_name=="GaussianProcessRegressor_Matern":  # Incertidumbre en Gaussian Process
             # Mostrar dos gráficos para los demás modelos
-            fig, axes = plt.subplots(1, 2, figsize=(14, 20))
+            fig, axes = plt.subplots(1, 2, figsize=(14, 10))
             axes[0].plot(filtered_df.loc[filtered_indices, col], yf, label="Real", color="blue", linestyle="dashed")
             y_std = np.sqrt(model.predict(Xf, return_std=True)[1])
             axes[0].fill_between(filtered_df.loc[filtered_indices, col], y_pred_df["Predicción"] - y_std, y_pred_df["Predicción"] + y_std, alpha=0.3, color="red", label = 'Incertidumbre')

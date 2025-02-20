@@ -46,6 +46,10 @@ def mostrar():
 
 # Función para graficar predicciones
 def plot_predictions(df1, column_selector, start_date, end_date, model_selector, models):
+
+        for nombre in ['X', 'y', 'X_train', 'X_test', 'y_train', 'y_test', 'train_idx', 'test_idx', 'ind']:
+            globals()[nombre] = np.load(f'Datos/Arreglos/{nombre}.npy')
+
         col = column_selector
         start_date = pd.Timestamp(start_date)
         end_date = pd.Timestamp(end_date)

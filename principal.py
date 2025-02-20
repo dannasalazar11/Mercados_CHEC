@@ -66,7 +66,7 @@ def main():
         'Fecha Limite Recepción Ofertas', 'Fecha Audiencia Pública'
         ]
 
-        for nombre in ['X', 'y', 'X_train', 'X_test', 'y_train', 'y_test', 'train_idx', 'test_idx']:
+        for nombre in ['X', 'y', 'X_train', 'X_test', 'y_train', 'y_test', 'train_idx', 'test_idx', 'ind']:
             globals()[nombre] = np.load(f'Datos/Arreglos/{nombre}.npy')
 
         

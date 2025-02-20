@@ -9,21 +9,17 @@ def main():
     choice = st.sidebar.radio("Selecciona una sección", sections)
     
     if choice == "Inicio":
-        st.title("Bases de Datos")
+        st.title("Presentación de Bases de Datos")
+
+        st.header("Bases de Datos Iniciales")
         
         Convocatorias_SICEP = pd.read_excel('Datos/Convocatorias_SICEP.xlsx',na_values="-")
         Productos_Adj_SICEP = pd.read_excel('Datos/Productos_Adj_SICEP.xlsx',na_values="-")
 
-        st.header("Selecciona una base de datos")
-        option = st.radio("Elige:", ["Convocatorias_SICEP", "Productos_Adj_SICEP"])
-        
-        if option == "Convocatorias_SICEP":
-            st.subheader("Visualización de la Base de Datos Convocatorias_SICEP")
-            st.dataframe(Convocatorias_SICEP)
-        
-        elif option == "Productos_Adj_SICEP":
-            st.subheader("Visualización de la Base de Datos Productos_Adj_SICEP")
-            st.dataframe(Productos_Adj_SICEP)
+        st.subheader("Visualización de la Base de Datos Convocatorias_SICEP")
+        st.dataframe(Convocatorias_SICEP)
+        st.subheader("Visualización de la Base de Datos Productos_Adj_SICEP")
+        st.dataframe(Productos_Adj_SICEP)
 
         st.header("Base de Datos Preprocesada")
 

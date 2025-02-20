@@ -68,7 +68,7 @@ def mostrar():
     with st.container():
         st.header("🏆 Base de Datos Final (Cruzada y Preprocesada)")
         st.markdown("""
-        <div style='background-color: #e6f7ff; padding: 10px; border-radius: 10px;'>
+        <div style= padding: 10px; border-radius: 10px;'>
             <ul>
                 <li>✅ Se filtran solo las convocatorias adjudicadas.</li>
                 <li>✅ Se eliminan columnas post-adjudicación para asegurarse de que el modelo aprenda solo a partir de información que está disponible antes de la adjudicación.</li>

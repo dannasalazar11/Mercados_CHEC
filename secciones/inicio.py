@@ -1,8 +1,8 @@
 import streamlit as st
 import pandas as pd
 
-# Configurar el layout de la página
-st.set_page_config(page_title="Análisis de Datos - SICEP", layout="wide")
+# # Configurar el layout de la página
+# st.set_page_config(page_title="Análisis de Datos - SICEP", layout="wide")
 
 def mostrar():
     # Título principal con ícono

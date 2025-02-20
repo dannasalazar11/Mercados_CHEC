@@ -50,8 +50,7 @@ def mostrar():
         for nombre in ['X', 'y', 'X_train', 'X_test', 'y_train', 'y_test', 'train_idx', 'test_idx', 'ind']:
             globals()[nombre] = np.load(f'Datos/Arreglos/{nombre}.npy')
 
-        df_final = pd.read_excel('Datos/df_final.xlsx')
-        feature_names = df_final.columns if len(df_final.columns) == len(importances) else np.arange(len(importances))
+
 
 
         col = column_selector
@@ -79,6 +78,11 @@ def mostrar():
 
         # **Alinear las predicciones con las fechas correctas**
         y_pred_df = pd.DataFrame(y_pred, index=filtered_df.loc[filtered_indices, col], columns=["Predicción"])
+
+        df_final = pd.read_excel('Datos/df_final.xlsx')
+        importances = model.feature_importances_
+
+        feature_names = df_final.columns if len(df_final.columns) == len(importances) else np.arange(len(importances))
 
         # Crear la figura con subgráficas
         if model_name == "NeuralNetwork":
@@ -135,7 +139,6 @@ def mostrar():
 
             # Segunda gráfica: Diferente según el modelo
             if hasattr(model, "feature_importances_"):  # RandomForest y GradientBoosting
-                importances = model.feature_importances_
                 axes[1].barh(feature_names, importances, color="green")
                 axes[1].set_xlabel("Importancia")
                 axes[1].set_ylabel("Características")

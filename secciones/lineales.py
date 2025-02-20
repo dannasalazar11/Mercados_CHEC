@@ -45,7 +45,7 @@ def mostrar():
         plot_predictions(df1, column_selector, start_date, end_date, model_selector, models)
 
 # Función para graficar predicciones
-def plot_predictions(column_selector, start_date, end_date, model_selector):
+def plot_predictions(df1, column_selector, start_date, end_date, model_selector, models):
         col = column_selector
         start_date = pd.Timestamp(start_date)
         end_date = pd.Timestamp(end_date)

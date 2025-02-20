@@ -6,7 +6,7 @@ import numpy as np
 import matplotlib.pyplot as plt
 
 def mostrar():
-    st.title("Modelos de Predicción Clásicos")
+    st.title("Modelos de Predicción Clásicos Lineales")
 
     # Cargar modelos desde la carpeta "Modelos"
     modelos_path = "Modelos"

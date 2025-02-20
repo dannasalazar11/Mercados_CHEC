@@ -6,6 +6,8 @@ import matplotlib.pyplot as plt
 import streamlit as st
 
 def mostrar():
+    st.title("Modelos de Predicción Clásicos No Lineales")
+
     # Definir la ruta de la carpeta donde están los modelos
     modelos_path = "Modelos"
 

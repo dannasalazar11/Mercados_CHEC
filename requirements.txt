@@ -5,3 +5,5 @@ keras
 tensorflow
 matplotlib
 torch
+pytorch-tabnet
+optuna

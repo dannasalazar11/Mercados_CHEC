@@ -72,23 +72,43 @@ def mostrar():
                 # Alinear predicciones con fechas
                 y_pred_df = pd.DataFrame(y_pred, index=filtered_df.loc[filtered_indices, columna_seleccionada], columns=["Predicción"])
                 
-                # Graficar resultados
-                fig, ax = plt.subplots(figsize=(10, 5))
-                ax.plot(filtered_df.loc[filtered_indices, columna_seleccionada], yf, label="Real", color="blue", linestyle="dashed")
-                ax.plot(y_pred_df, label="Predicción", color="red")
-                ax.set_xlabel("Fecha")
-                ax.set_ylabel("Valor")
-                ax.set_title(f"Predicción vs Real ({modelo_seleccionado})")
-                ax.legend()
-                plt.xticks(rotation=45)
-                st.pyplot(fig)
+                # Mostrar gráficas en Streamlit
+                output_predictions = st.empty()
                 
-                # Mostrar feature importances si están disponibles
-                if hasattr(model, "feature_importances_"):
-                    fig, ax = plt.subplots(figsize=(8, 5))
-                    importances = model.feature_importances_
-                    ax.barh(feature_names, importances, color="green")
-                    ax.set_xlabel("Importancia")
-                    ax.set_ylabel("Características")
-                    ax.set_title(f"Importancia de Características ({modelo_seleccionado})")
-                    st.pyplot(fig)
+                with output_predictions:
+                    clear_output(wait=True)
+                    
+                    if modelo_seleccionado == "NeuralNetwork":
+                        plt.figure(figsize=(10, 5))
+                        plt.plot(filtered_df.loc[filtered_indices, columna_seleccionada], yf, label="Real", color="blue", linestyle="dashed")
+                        plt.plot(y_pred_df, label="Predicción", color="red")
+                        plt.xlabel("Fecha")
+                        plt.ylabel("Valor")
+                        plt.title(f"Predicción vs Real ({modelo_seleccionado})")
+                        plt.legend()
+                        plt.xticks(rotation=45)
+                        st.pyplot(plt)
+                    
+                    elif modelo_seleccionado in ["GaussianProcessRegressor", "GaussianProcessRegressor_Matern"]:
+                        fig, axes = plt.subplots(1, 2, figsize=(14, 5))
+                        axes[0].plot(filtered_df.loc[filtered_indices, columna_seleccionada], yf, label="Real", color="blue", linestyle="dashed")
+                        y_std = np.sqrt(model.predict(Xf, return_std=True)[1])
+                        axes[0].fill_between(filtered_df.loc[filtered_indices, columna_seleccionada], y_pred_df["Predicción"] - y_std, y_pred_df["Predicción"] + y_std, alpha=0.3, color="red", label='Incertidumbre')
+                        axes[0].plot(y_pred_df, label="Predicción", color="red")
+                        axes[0].set_xlabel("Fecha")
+                        axes[0].set_ylabel("Valor")
+                        axes[0].set_title("Predicción con Incertidumbre")
+                        axes[0].legend()
+                        st.pyplot(fig)
+                    
+                    else:
+                        fig, axes = plt.subplots(1, 2, figsize=(14, 5))
+                        axes[0].plot(filtered_df.loc[filtered_indices, columna_seleccionada], yf, label="Real", color="blue", linestyle="dashed")
+                        axes[0].plot(y_pred_df, label="Predicción", color="red")
+                        axes[0].set_xlabel("Fecha")
+                        axes[0].set_ylabel("Valor")
+                        axes[0].set_title(f"Predicción vs Real ({modelo_seleccionado})")
+                        axes[0].legend()
+                        axes[0].tick_params(axis='x', rotation=45)
+                        st.pyplot(fig)
+

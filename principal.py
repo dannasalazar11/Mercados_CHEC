@@ -62,6 +62,8 @@ def regresores_clasicos():
     # Obtener el rango de fechas para la columna seleccionada
     min_date = df1[column_selector].min()
     max_date = df1[column_selector].max()
+
+    st.write(f"{min_date}{max_date}")
     
     # Selección de rango de fechas
     start_date = st.date_input("Fecha de Inicio", min_date, min_value=min_date, max_value=max_date)

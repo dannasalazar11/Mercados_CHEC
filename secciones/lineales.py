@@ -37,8 +37,8 @@ def mostrar():
     max_date = df1[column_selector].max()
 
     # Selección de rango de fechas
-    start_date = st.sidebar.date_input("Fecha de Inicio", min_date, min_value=min_date, max_value=max_date)
-    end_date = st.sidebar.date_input("Fecha de Fin", max_date, min_value=min_date, max_value=max_date)
+    start_date = st.date_input("Fecha de Inicio", min_date, min_value=min_date, max_value=max_date)
+    end_date = st.date_input("Fecha de Fin", max_date, min_value=min_date, max_value=max_date)
 
     # Botón para generar la gráfica
     if st.button("Generar Gráfica"):

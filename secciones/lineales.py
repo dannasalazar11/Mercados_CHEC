@@ -91,7 +91,7 @@ def plot_predictions(df1, column_selector, start_date, end_date, model_selector,
         plt.plot(filtered_df.loc[filtered_indices, col], y_pred, label="Predicción", color="red")
         plt.xlabel("Fecha")
         plt.ylabel("Valor")
-        plt.title(f"📊 Predicción vs Real ({model_name})")
+        plt.title(f"Predicción vs Real ({model_name})")
         plt.legend()
         plt.xticks(rotation=45)
         st.pyplot(plt)
@@ -105,7 +105,7 @@ def plot_predictions(df1, column_selector, start_date, end_date, model_selector,
             plt.barh(feature_names, coef, color="purple")
             plt.xlabel("Valor del coeficiente")
             plt.ylabel("Características")
-            plt.title(f"🟣 Importancia de Características ({model_name})")
+            plt.title(f"Importancia de Características ({model_name})")
             st.pyplot(plt)
 
     else:

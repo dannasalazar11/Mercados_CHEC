@@ -27,7 +27,7 @@ def main():
 
         st.header("Base de Datos Preprocesada")
 
-         = pd.read_excel('Datos/df_imputado.xlsx')
+        Xdata = pd.read_excel('Datos/df_imputado.xlsx')
         st.dataframe(Xdata)
         
     

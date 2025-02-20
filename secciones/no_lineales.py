@@ -50,8 +50,7 @@ def mostrar():
         for nombre in ['X', 'y', 'X_train', 'X_test', 'y_train', 'y_test', 'train_idx', 'test_idx', 'ind']:
             globals()[nombre] = np.load(f'Datos/Arreglos/{nombre}.npy')
 
-
-
+        df_final = pd.read_excel('Datos/df_final.xlsx')
 
         col = column_selector
         start_date = pd.Timestamp(start_date)
@@ -136,7 +135,6 @@ def mostrar():
 
             # Segunda gráfica: Diferente según el modelo
             if hasattr(model, "feature_importances_"):  # RandomForest y GradientBoosting
-                df_final = pd.read_excel('Datos/df_final.xlsx')
                 importances = model.feature_importances_
                 feature_names = df_final.columns 
                 axes[1].barh(feature_names, importances, color="green")

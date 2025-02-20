@@ -66,15 +66,8 @@ def regresores_clasicos():
     st.write(f"{min_date}{max_date}")
     
     # Selección de rango de fechas
-    # start_date = st.date_input("Fecha de Inicio", min_date, min_value=min_date, max_value=max_date)
-    # end_date = st.date_input("Fecha de Fin", max_date, min_value=min_date, max_value=max_date)
-
-
-    st.sidebar.title("Parámetros de Selección")
-    
-    # Selección de rango de fechas sin restricciones
-    start_date = st.sidebar.date_input("Fecha de Inicio")
-    end_date = st.sidebar.date_input("Fecha de Fin")
+    start_date = st.date_input("Fecha de Inicio", min_date, min_value=min_date, max_value=max_date)
+    end_date = st.date_input("Fecha de Fin", max_date, min_value=min_date, max_value=max_date)
     
     # Mostrar las fechas seleccionadas
     st.write(f"Rango de fechas seleccionado: {start_date} - {end_date}")

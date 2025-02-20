@@ -88,6 +88,59 @@ def mostrar():
             plt.legend()
             plt.xticks(rotation=45)
             st.pyplot(plt)
+        
+        elif model_name == "GaussianProcessRegressor" or model_name=="GaussianProcessRegressor_Matern":  # Incertidumbre en Gaussian Process
+            # Mostrar dos gráficos para los demás modelos
+            fig, axes = plt.subplots(1, 2, figsize=(14, 5))
+            axes[0].plot(filtered_df.loc[filtered_indices, col], yf, label="Real", color="blue", linestyle="dashed")
+            y_std = np.sqrt(model.predict(Xf, return_std=True)[1])
+            axes[0].fill_between(filtered_df.loc[filtered_indices, col], y_pred_df["Predicción"] - y_std, y_pred_df["Predicción"] + y_std, alpha=0.3, color="red", label = 'Incertidumbre')
+            axes[0].plot(y_pred_df, label="Predicción", color="red")
+            axes[0].set_xlabel("Fecha")
+            axes[0].set_ylabel("Valor")
+            axes[0].set_title("Predicción con Incertidumbre")
+            axes[0].legend()
+
+            # Obtener los valores de length_scale (suponiendo que es un array o lista)
+            length_scales = model.kernel_.get_params()['k2__length_scale']
+
+            # Si length_scales es un solo valor, convertirlo en una lista para graficarlo
+            if np.isscalar(length_scales):
+                length_scales = [length_scales]
+
+            # Crear el barplot
+            axes[1].bar(feature_names, 1/length_scales/(np.max( 1/length_scales)), color='blue')
+            axes[1].tick_params(axis='x', rotation=90)
+            axes[1].set_xlabel('Características')
+            axes[1].set_title("Barplot de Length Scale Resultante")
+            plt.tight_layout()
+            st.pyplot(fig)
+
+        else:
+            # Mostrar dos gráficos para los demás modelos
+            fig, axes = plt.subplots(1, 2, figsize=(14, 5))
+
+            # Primera gráfica: Predicción vs serie real
+            axes[0].plot(filtered_df.loc[filtered_indices, col], yf, label="Real", color="blue", linestyle="dashed")
+            axes[0].plot(y_pred_df, label="Predicción", color="red")
+            axes[0].set_xlabel("Fecha")
+            axes[0].set_ylabel("Valor")
+            axes[0].set_title(f"Predicción vs Real ({model_name})")
+            axes[0].legend()
+            axes[0].tick_params(axis='x', rotation=45)
+
+            # Segunda gráfica: Diferente según el modelo
+            if hasattr(model, "feature_importances_"):  # RandomForest y GradientBoosting
+                importances = model.feature_importances_
+                feature_names = df_final.columns if len(df_final.columns) == len(importances) else np.arange(len(importances))
+                axes[1].barh(feature_names, importances, color="green")
+                axes[1].set_xlabel("Importancia")
+                axes[1].set_ylabel("Características")
+                axes[1].set_title(f"Importancia de Características ({model_name})")
+                plt.tight_layout()
+                st.pyplot(fig)
+
+
 
     # Botón para generar la gráfica
     if st.button("Generar Gráfica"):

@@ -34,7 +34,7 @@ def mostrar():
     model_selector = st.selectbox("🎯 Selecciona el modelo", list(models.keys()))
 
     # Mostrar la descripción del modelo seleccionado
-    st.info(model_descriptions[model_selector])
+    st.markdown(model_descriptions[model_selector])
 
     # Lista de columnas de fecha disponibles
     fecha_columns = [

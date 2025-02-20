@@ -36,7 +36,7 @@ st.set_page_config(page_title="Modelos de Predicción", layout="wide")
 # 📌 Sidebar con navegación
 st.sidebar.title("Índice de Secciones")
 sections = {
-    "Inicio": "Inicio",
+    "Inicio": "Bases de Datos",
     "Regresores Clásicos Lineales": "Regresores Lineales",
     "Regresores Clásicos No Lineales": "Regresores No Lineales",
     "TabNet": "TabNet",
@@ -47,7 +47,6 @@ choice = st.sidebar.radio("Selecciona una sección", list(sections.keys()), form
 
 # 📌 Mostrar la sección seleccionada
 if choice == "Inicio":
-    st.success("Bienvenido. Selecciona una sección en el menú lateral para comenzar.")
     inicio.mostrar()
 
 elif choice == "Regresores Clásicos Lineales":

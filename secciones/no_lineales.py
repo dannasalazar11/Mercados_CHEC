@@ -10,18 +10,14 @@ def mostrar():
     modelos_path = "Modelos"
 
     # Lista de modelos no lineales
+    modelos_no_lineales = ["RandomForest", "GradientBoosting", "NeuralNetwork", "GaussianProcessRegressor", "GaussianProcessRegressor_Matern"]
 
-    modelos_path = "Modelos"
-
-    # Obtener todos los archivos .joblib en la carpeta
-    model_files = [f for f in os.listdir(modelos_path) if f.endswith(".joblib")]
-
-    # Cargar todos los modelos en un diccionario
+    # Cargar solo los modelos no lineales en un diccionario
     models = {}
-    for file in model_files:
-        file_path = os.path.join(modelos_path, file)
-        model_name = file.replace(".joblib", "")  # Nombre del modelo sin extensión
-        models[model_name] = joblib.load(file_path)
+    for model_name in modelos_no_lineales:
+        file_path = os.path.join(modelos_path, model_name + ".joblib")
+        if os.path.exists(file_path):  # Verificar que el archivo existe
+            models[model_name] = joblib.load(file_path)
 
     # Lista de columnas de fecha disponibles
     fecha_columns = [
@@ -29,86 +25,67 @@ def mostrar():
         'Fin Periodo Contratar', 'Fecha Publicacion Aviso',
         'Fecha Pliegos Para Consulta', 'Fecha Pliegos Definitivos',
         'Fecha Limite Recepción Ofertas', 'Fecha Audiencia Pública'
-    ]
-
-    # Cargar datos (suponiendo que los datos están en un archivo CSV o similar)
+        ]
     df1 = pd.read_excel('Datos/df_imputado_original.xlsx')
     df1[fecha_columns] = df1[fecha_columns].apply(pd.to_datetime, errors='coerce')
 
-    df_final = pd.read_excel('Datos/df_final.xlsx')  # Simulación de datos procesados
-    feature_names = df_final.columns
-
-    # Interfaz de usuario en Streamlit
-    st.title("Visualización de Predicciones de Modelos No Lineales")
-
     # Selección de columna de fecha
-    columna_seleccionada = st.selectbox("Seleccione la columna de fecha:", fecha_columns)
+    column_selector = st.selectbox("Selecciona la columna de fecha", fecha_columns)
 
-    # Definir rango de fechas
-    min_date = df1[columna_seleccionada].min()
-    max_date = df1[columna_seleccionada].max()
-    fecha_inicio = st.date_input("Fecha Inicio", min_value=min_date, max_value=max_date, value=min_date)
-    fecha_fin = st.date_input("Fecha Fin", min_value=min_date, max_value=max_date, value=max_date)
+    # Obtener el rango de fechas para la columna seleccionada
+    min_date = df1[column_selector].min()
+    max_date = df1[column_selector].max()
 
-    # Selección de modelo
-    modelo_seleccionado = st.selectbox("Seleccione el modelo:", list(models.keys()))
+    # Selección de rango de fechas
+    start_date = st.date_input("Fecha de Inicio", min_date, min_value=min_date, max_value=max_date)
+    end_date = st.date_input("Fecha de Fin", max_date, min_value=min_date, max_value=max_date)
 
     # Botón para generar la gráfica
     if st.button("Generar Gráfica"):
-        with st.spinner("Generando gráfica..."):
-            # Filtrar datos en el período seleccionado
-            filtered_df = df1[(df1[columna_seleccionada] >= pd.Timestamp(fecha_inicio)) & (df1[columna_seleccionada] <= pd.Timestamp(fecha_fin))]
-            filtered_indices = list(set(df1.index) & set(filtered_df.index))
-            filtered_indices.sort()
-            
-            if len(filtered_indices) == 0:
-                st.warning("No hay datos en el rango de fechas seleccionado.")
-            else:
-                Xf = np.random.rand(len(filtered_indices), len(feature_names))  # Simulación de datos de entrada
-                yf = np.random.rand(len(filtered_indices))  # Simulación de datos reales
-                model = models[modelo_seleccionado]
-                y_pred = model.predict(Xf)
-                
-                # Alinear predicciones con fechas
-                y_pred_df = pd.DataFrame(y_pred, index=filtered_df.loc[filtered_indices, columna_seleccionada], columns=["Predicción"])
-                
-                # # Mostrar gráficas en Streamlit
-                # output_predictions = st.empty()
-                
-                # with output_predictions:
-                #     clear_output(wait=True)
-                    
-                if modelo_seleccionado == "NeuralNetwork":
-                    plt.figure(figsize=(10, 5))
-                    plt.plot(filtered_df.loc[filtered_indices, columna_seleccionada], yf, label="Real", color="blue", linestyle="dashed")
-                    plt.plot(y_pred_df, label="Predicción", color="red")
-                    plt.xlabel("Fecha")
-                    plt.ylabel("Valor")
-                    plt.title(f"Predicción vs Real ({modelo_seleccionado})")
-                    plt.legend()
-                    plt.xticks(rotation=45)
-                    st.pyplot(plt)
-                
-                elif modelo_seleccionado in ["GaussianProcessRegressor", "GaussianProcessRegressor_Matern"]:
-                    fig, axes = plt.subplots(1, 2, figsize=(14, 5))
-                    axes[0].plot(filtered_df.loc[filtered_indices, columna_seleccionada], yf, label="Real", color="blue", linestyle="dashed")
-                    y_std = np.sqrt(model.predict(Xf, return_std=True)[1])
-                    axes[0].fill_between(filtered_df.loc[filtered_indices, columna_seleccionada], y_pred_df["Predicción"] - y_std, y_pred_df["Predicción"] + y_std, alpha=0.3, color="red", label='Incertidumbre')
-                    axes[0].plot(y_pred_df, label="Predicción", color="red")
-                    axes[0].set_xlabel("Fecha")
-                    axes[0].set_ylabel("Valor")
-                    axes[0].set_title("Predicción con Incertidumbre")
-                    axes[0].legend()
-                    st.pyplot(fig)
-                
-                else:
-                    fig, axes = plt.subplots(1, 2, figsize=(14, 5))
-                    axes[0].plot(filtered_df.loc[filtered_indices, columna_seleccionada], yf, label="Real", color="blue", linestyle="dashed")
-                    axes[0].plot(y_pred_df, label="Predicción", color="red")
-                    axes[0].set_xlabel("Fecha")
-                    axes[0].set_ylabel("Valor")
-                    axes[0].set_title(f"Predicción vs Real ({modelo_seleccionado})")
-                    axes[0].legend()
-                    axes[0].tick_params(axis='x', rotation=45)
-                    st.pyplot(fig)
+        plot_predictions(df1, column_selector, start_date, end_date, model_selector, models)
 
+    def generate_graph(column_selector, date_picker_start, date_picker_end, model_selector):
+
+        for nombre in ['X', 'y', 'X_train', 'X_test', 'y_train', 'y_test', 'train_idx', 'test_idx', 'ind']:
+            globals()[nombre] = np.load(f'Datos/Arreglos/{nombre}.npy')
+
+        df_final = pd.read_excel('Datos/df_final.xlsx')
+
+        col = column_selector
+        start_date = pd.Timestamp(start_date)
+        end_date = pd.Timestamp(end_date)
+        model_name = model_selector
+    
+        # Filtrar datos en el período seleccionado
+        filtered_df = df1[(df1[col] >= pd.Timestamp(start_date)) & (df1[col] <= pd.Timestamp(end_date))]
+        # filtered_indices = filtered_df.index
+
+        filtered_indices = list(set(test_idx) & set(filtered_df.index))
+        filtered_indices.sort()
+
+        # print(len(test_idx), filtered_df.index, filtered_indices)
+
+        if len(filtered_indices) == 0:
+            st.warning("No hay datos en el rango de fechas seleccionado.")
+            return
+
+        Xf = X[filtered_indices]
+        yf = y[filtered_indices]
+        model = models[model_name]
+        y_pred = model.predict(Xf)
+
+        # **Alinear las predicciones con las fechas correctas**
+        y_pred_df = pd.DataFrame(y_pred, index=filtered_df.loc[filtered_indices, col], columns=["Predicción"])
+
+        # Crear la figura con subgráficas
+        if model_name == "NeuralNetwork":
+            # Solo mostrar la predicción vs. la real
+            plt.figure(figsize=(10, 5))
+            plt.plot(filtered_df.loc[filtered_indices, col], yf, label="Real", color="blue", linestyle="dashed")
+            plt.plot(y_pred_df, label="Predicción", color="red")
+            plt.xlabel("Fecha")
+            plt.ylabel("Valor")
+            plt.title(f"Predicción vs Real ({model_name})")
+            plt.legend()
+            plt.xticks(rotation=45)
+            st.pyplot(plt)

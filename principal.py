@@ -31,37 +31,37 @@ class CustomTabNetRegressor(TabNetRegressor):
         return output.cpu().numpy()
 
 # 📌 Configuración de la página
-st.set_page_config(page_title="📊 Predicción de Modelos", layout="wide")
+st.set_page_config(page_title="Modelos de Predicción", layout="wide")
 
-# 📌 Sidebar con iconos y navegación
-st.sidebar.header("📌 Índice de Secciones")
+# 📌 Sidebar con navegación
+st.sidebar.title("Índice de Secciones")
 sections = {
-    "Inicio": "🏠 Inicio",
-    "Regresores Clásicos Lineales": "📈 Regresores Lineales",
-    "Regresores Clásicos No Lineales": "🌲 Regresores No Lineales",
-    "TabNet": "🔬 TabNet",
-    "Propuesta": "💡 Propuesta"
+    "Inicio": "Inicio",
+    "Regresores Clásicos Lineales": "Regresores Lineales",
+    "Regresores Clásicos No Lineales": "Regresores No Lineales",
+    "TabNet": "TabNet",
+    "Propuesta": "Propuesta"
 }
 
-choice = st.sidebar.radio("🔎 Selecciona una sección", list(sections.keys()), format_func=lambda x: sections[x])
+choice = st.sidebar.radio("Selecciona una sección", list(sections.keys()), format_func=lambda x: sections[x])
 
 # 📌 Mostrar la sección seleccionada
 if choice == "Inicio":
-    st.success("🏠 Bienvenido a la aplicación. Selecciona una sección en el menú lateral para comenzar.")
+    st.success("Bienvenido. Selecciona una sección en el menú lateral para comenzar.")
     inicio.mostrar()
 
 elif choice == "Regresores Clásicos Lineales":
-    st.info("📈 Sección de regresores clásicos lineales.")
+    st.info("Sección de regresores clásicos lineales.")
     lineales.mostrar()
 
 elif choice == "Regresores Clásicos No Lineales":
-    st.info("🌲 Sección de regresores clásicos no lineales.")
+    st.info("Sección de regresores clásicos no lineales.")
     no_lineales.mostrar()
 
 elif choice == "TabNet":
-    st.info("🔬 Sección de TabNet para modelos de predicción avanzados.")
+    st.info("Sección de TabNet para modelos de predicción avanzados.")
     tabnet.mostrar()
 
 elif choice == "Propuesta":
-    st.info("💡 Sección con la propuesta de modelo.")
+    st.info("Sección con la propuesta de modelo.")
     propuesta.mostrar()

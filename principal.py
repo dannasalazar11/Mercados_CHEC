@@ -3,6 +3,8 @@ import pandas as pd
 import joblib
 import os
 import numpy as np
+import matplotlib.pyplot as plt
+
 
 def regresores_clasicos():
     st.title("Modelos de Predicción Clásicos")
@@ -164,14 +166,6 @@ def main():
     
     elif choice == "Regresores Clásicos":
         regresores_clasicos()
-
-import streamlit as st
-import pandas as pd
-import numpy as np
-import matplotlib.pyplot as plt
-
-
-
         
     
     elif choice == "Datos":

@@ -43,6 +43,9 @@ def mostrar():
     start_date = st.date_input("Fecha de Inicio", min_date, min_value=min_date, max_value=max_date)
     end_date = st.date_input("Fecha de Fin", max_date, min_value=min_date, max_value=max_date)
 
+    feature_names = df_final.columns if len(df_final.columns) == len(importances) else np.arange(len(importances))
+
+
     def plot_predictions(df1, column_selector, start_date, end_date, model_selector, models):
 
         for nombre in ['X', 'y', 'X_train', 'X_test', 'y_train', 'y_test', 'train_idx', 'test_idx', 'ind']:
@@ -132,7 +135,6 @@ def mostrar():
             # Segunda gráfica: Diferente según el modelo
             if hasattr(model, "feature_importances_"):  # RandomForest y GradientBoosting
                 importances = model.feature_importances_
-                feature_names = df_final.columns if len(df_final.columns) == len(importances) else np.arange(len(importances))
                 axes[1].barh(feature_names, importances, color="green")
                 axes[1].set_xlabel("Importancia")
                 axes[1].set_ylabel("Características")

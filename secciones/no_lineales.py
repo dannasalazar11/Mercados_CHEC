@@ -19,6 +19,9 @@ def mostrar():
         if os.path.exists(file_path):  # Verificar que el archivo existe
             models[model_name] = joblib.load(file_path)
 
+    # Selección de modelo
+    model_selector = st.selectbox("Selecciona el modelo", list(models.keys()))
+
     # Lista de columnas de fecha disponibles
     fecha_columns = [
         'Fecha Actualización Estado Convocatoria', 'Inicio Periodo Contratar',

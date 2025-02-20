@@ -11,7 +11,7 @@ def main():
     if choice == "Inicio":
         st.title("Bases de Datos")
         
-        Convocatorias_SICEP = pd.read_excel('/Datos/Convocatorias_SICEP.xlsx',na_values="-")
+        Convocatorias_SICEP = pd.read_excel('Datos/Convocatorias_SICEP.xlsx',na_values="-")
         Productos_Adj_SICEP = pd.read_excel('Datos/Productos_Adj_SICEP.xlsx',na_values="-")
 
         st.sidebar.title("Selecciona una base de datos")

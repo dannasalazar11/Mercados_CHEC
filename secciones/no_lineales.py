@@ -43,10 +43,6 @@ def mostrar():
     start_date = st.date_input("Fecha de Inicio", min_date, min_value=min_date, max_value=max_date)
     end_date = st.date_input("Fecha de Fin", max_date, min_value=min_date, max_value=max_date)
 
-    # Botón para generar la gráfica
-    if st.button("Generar Gráfica"):
-        plot_predictions(df1, column_selector, start_date, end_date, model_selector, models)
-
     def plot_predictions(df1, column_selector, start_date, end_date, model_selector, models):
 
         for nombre in ['X', 'y', 'X_train', 'X_test', 'y_train', 'y_test', 'train_idx', 'test_idx', 'ind']:
@@ -92,3 +88,7 @@ def mostrar():
             plt.legend()
             plt.xticks(rotation=45)
             st.pyplot(plt)
+
+    # Botón para generar la gráfica
+    if st.button("Generar Gráfica"):
+        plot_predictions(df1, column_selector, start_date, end_date, model_selector, models)

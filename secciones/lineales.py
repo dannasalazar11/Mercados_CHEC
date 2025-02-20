@@ -50,6 +50,8 @@ def plot_predictions(df1, column_selector, start_date, end_date, model_selector,
         for nombre in ['X', 'y', 'X_train', 'X_test', 'y_train', 'y_test', 'train_idx', 'test_idx', 'ind']:
             globals()[nombre] = np.load(f'Datos/Arreglos/{nombre}.npy')
 
+        df_final = pd.read_excel('Datos/df_final.xlsx')
+
         col = column_selector
         start_date = pd.Timestamp(start_date)
         end_date = pd.Timestamp(end_date)

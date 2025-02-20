@@ -67,7 +67,7 @@ def main():
         ]
 
         # base de datos que vamos a trabajar
-        X = np.load('Datos/X.npy')
+        X = np.load('Datos/Arreglos/X.npy')
 
         st.write(f"{X.shape}")
 

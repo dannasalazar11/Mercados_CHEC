@@ -47,7 +47,7 @@ def mostrar():
     if st.button("Generar Gráfica"):
         plot_predictions(df1, column_selector, start_date, end_date, model_selector, models)
 
-    def generate_graph(column_selector, date_picker_start, date_picker_end, model_selector):
+    def plot_predictions(df1, column_selector, start_date, end_date, model_selector, models):
 
         for nombre in ['X', 'y', 'X_train', 'X_test', 'y_train', 'y_test', 'train_idx', 'test_idx', 'ind']:
             globals()[nombre] = np.load(f'Datos/Arreglos/{nombre}.npy')

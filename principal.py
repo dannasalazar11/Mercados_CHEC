@@ -69,8 +69,8 @@ def regresores_clasicos():
     # start_date = st.date_input("Fecha de Inicio", min_date, min_value=min_date, max_value=max_date)
     # end_date = st.date_input("Fecha de Fin", max_date, min_value=min_date, max_value=max_date)
 
-    start_date = st.sidebar.date_input("Fecha de Inicio", min_date.date(), min_value=min_date.date(), max_value=max_date.date())
-    end_date = st.sidebar.date_input("Fecha de Fin", max_date.date(), min_value=min_date.date(), max_value=max_date.date())
+    start_date = st.date_input("Fecha de Inicio", min_date.date(), min_value=min_date.date(), max_value=max_date.date())
+    end_date = st.date_input("Fecha de Fin", max_date.date(), min_value=min_date.date(), max_value=max_date.date())
 
     
     # Selección de modelo

@@ -52,6 +52,8 @@ def regresores_clasicos():
     
     # Asegurarse de que las columnas de fecha están en formato datetime
     df1[fecha_columns] = df1[fecha_columns].apply(pd.to_datetime, errors='coerce')
+    df_final = pd.read_excel('Datos/df_final.xlsx')
+    st.dataframe(df_final)
     
     # Sidebar para selección de parámetros
     st.title("Parámetros de Selección")
@@ -167,8 +169,8 @@ def main():
 
         st.header("Base de Datos Final (Cruzada y Preprocesada)")
 
-        Xdata = pd.read_excel('Datos/df_final.xlsx')
-        st.dataframe(Xdata)
+        df_final = pd.read_excel('Datos/df_final.xlsx')
+        st.dataframe(df_final)
     
     elif choice == "Regresores Clásicos":
         regresores_clasicos()

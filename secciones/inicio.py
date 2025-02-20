@@ -31,9 +31,13 @@ def mostrar():
     st.header("Base de Datos Final (Cruzada y Preprocesada)")
     st.markdown("""
     ✅ Se filtran solo las convocatorias adjudicadas.  
+
     ✅ Se eliminan columnas post-adjudicación para asegurarse de que el modelo aprenda solo a partir de información que está disponible antes de la adjudicación.  
+    
     ✅ Se codifican variables categóricas. 
+
     ✅ Se normalizan los datos con MinMaxScaler.  
+    
     ✅ Se dividen en conjuntos de entrenamiento, validación y prueba.  
     """)
     df_final = pd.read_excel('Datos/df_final.xlsx')

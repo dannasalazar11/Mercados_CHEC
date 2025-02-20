@@ -24,6 +24,11 @@ def main():
         elif option == "Productos_Adj_SICEP":
             st.subheader("Visualización de la Base de Datos Productos_Adj_SICEP")
             st.dataframe(Productos_Adj_SICEP)
+
+        st.header("Base de Datos Preprocesada")
+
+         = pd.read_excel('Datos/df_imputado.xlsx')
+        st.dataframe(Xdata)
         
     
     elif choice == "Acerca de":

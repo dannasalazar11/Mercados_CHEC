@@ -30,6 +30,8 @@ def mostrar():
     df1[fecha_columns] = df1[fecha_columns].apply(pd.to_datetime, errors='coerce')
 
     # Selección de columna de fecha
+    column_selector = st.selectbox("Selecciona la columna de fecha", fecha_columns)
+
     # Obtener el rango de fechas para la columna seleccionada
     min_date = df1[column_selector].min()
     max_date = df1[column_selector].max()
@@ -37,7 +39,6 @@ def mostrar():
     # Selección de rango de fechas
     start_date = st.sidebar.date_input("Fecha de Inicio", min_date, min_value=min_date, max_value=max_date)
     end_date = st.sidebar.date_input("Fecha de Fin", max_date, min_value=min_date, max_value=max_date)
-
 
     # Botón para generar la gráfica
     if st.button("Generar Gráfica"):

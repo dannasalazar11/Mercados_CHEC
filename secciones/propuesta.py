@@ -61,4 +61,8 @@ def mostrar():
         "Con esta propuesta, la CHEC podrá **maximizar la eficiencia en sus procesos de compra de energía**, integrando factores económicos y Adendas para una **mejor toma de decisiones**."
     )
 
-    st.pdf("Datos/Imagenes/resumen_Mercados CHEC.pdf")
+    pdf_file = "Datos/Imagenes/resumen_Mercados CHEC.pdf"
+
+    # Mostrar PDF en un iframe
+    pdf_viewer = f'<iframe src="{pdf_file}" width="700" height="500" type="application/pdf"></iframe>'
+    st.components.v1.html(pdf_viewer, height=550)

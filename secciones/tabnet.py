@@ -29,12 +29,16 @@ class CustomTabNetRegressor(TabNetRegressor):
             output, _ = self.forward(X)
         return output.cpu().numpy()
 
-@st.cache_resource
+# @st.cache_resource
+# def load_model():
+#     model_path = "Modelos/Best_model.pth"  # Ruta del modelo guardado
+#     model = torch.load(model_path, map_location=torch.device('cpu'))  # Cargar en CPU
+#     model.eval()  # Poner en modo evaluación
+#     return model
+
 def load_model():
-    model_path = "Modelos/Best_model.pth"  # Ruta del modelo guardado
-    model = torch.load(model_path, map_location=torch.device('cpu'))  # Cargar en CPU
-    model.eval()  # Poner en modo evaluación
-    return model
+    return joblib.load("Modelos/custom_tabnet_model.pkl")
+
 
 # def R2(clf):
 #     # Start figure for 1 row and 3 columns

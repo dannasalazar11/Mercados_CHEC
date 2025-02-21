@@ -38,7 +38,10 @@ class CustomTabNetRegressor(TabNetRegressor):
 #     return model
 
 def load_model():
-    return joblib.load("Modelos/custom_tabnet_model.pkl")
+    model = CustomTabNetRegressor()  # Instancia el modelo vacío
+    model.network.load_state_dict(torch.load("Modelos/custom_tabnet_model.pth", map_location=torch.device('cpu')))  # Cargar pesos
+    model.eval()  # Poner en modo evaluación
+    return model
 
 
 # def R2(clf):

@@ -60,3 +60,5 @@ def mostrar():
     st.markdown(
         "Con esta propuesta, la CHEC podrá **maximizar la eficiencia en sus procesos de compra de energía**, integrando factores económicos y Adendas para una **mejor toma de decisiones**."
     )
+
+    st.pdf("Datos/Imagenes/resumen_Mercados CHEC.pdf")

@@ -61,6 +61,4 @@ def mostrar():
         "Con esta propuesta, la CHEC podrá **maximizar la eficiencia en sus procesos de compra de energía**, integrando factores económicos y Adendas para una **mejor toma de decisiones**."
     )
 
-    image = "Datos/Imagenes/Mercados CHEC.png"
-
-    st.image(image)
+    st.image("Datos/Imagenes/Mercados CHEC.png", caption="", use_container_width=True)

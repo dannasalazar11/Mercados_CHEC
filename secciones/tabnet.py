@@ -43,7 +43,7 @@ def mostrar():
     # Mostrar una imagen desde una ruta local
     st.image("Datos/Imagenes/tabnet.jpg", caption="Arquitectura de la TabNet", use_container_width=True)
 
-    st.write(f"{dir(TabNetRegressor)}, {dir(CustomTabNetRegressor)}")
+    st.write(f"{dir(TabNetRegressor)}, \n custom: {dir(CustomTabNetRegressor)}")
     clf = load_model()
     st.write("Modelo cargado")
 

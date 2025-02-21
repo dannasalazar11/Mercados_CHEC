@@ -4,6 +4,7 @@ from sklearn.metrics import r2_score
 import matplotlib.pyplot as plt
 from pytorch_tabnet.tab_model import TabNetRegressor
 import numpy as np
+import joblib
 
 def my_r2_score_fn(y_pred, y_true):
     total_variance = torch.var(y_true, unbiased=False)

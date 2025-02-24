@@ -4,6 +4,7 @@ import numpy as np
 import pandas as pd
 import matplotlib.pyplot as plt
 import streamlit as st
+from sklearn.preprocessing import MinMaxScaler
 
 def mostrar():
     st.title("📈 Modelos de Predicción Clásicos No Lineales")

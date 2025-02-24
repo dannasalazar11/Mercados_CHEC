@@ -86,15 +86,16 @@ def mostrar():
         y_pred = model.predict(Xf)
 
         # **Gráfico 1: Predicción vs Real**
-        plt.figure(figsize=(10, 5))
-        plt.plot(filtered_df.loc[filtered_indices, col], yf, label="Real", color="blue", linestyle="dashed")
-        plt.plot(filtered_df.loc[filtered_indices, col], y_pred, label="Predicción", color="red")
-        plt.xlabel("Fecha")
-        plt.ylabel("Valor")
-        plt.title(f"📊 Predicción vs Real ({model_name})")
-        plt.legend()
-        plt.xticks(rotation=45)
-        st.pyplot(plt)
+        if model_name != "GaussianProcessRegressor":
+            plt.figure(figsize=(10, 5))
+            plt.plot(filtered_df.loc[filtered_indices, col], yf, label="Real", color="blue", linestyle="dashed")
+            plt.plot(filtered_df.loc[filtered_indices, col], y_pred, label="Predicción", color="red")
+            plt.xlabel("Fecha")
+            plt.ylabel("Valor")
+            plt.title(f"📊 Predicción vs Real ({model_name})")
+            plt.legend()
+            plt.xticks(rotation=45)
+            st.pyplot(plt)
 
         # 🔍 **Gráfico 2: Incertidumbre en Gaussian Process**
         if model_name in ["GaussianProcessRegressor"]:

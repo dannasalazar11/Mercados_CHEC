@@ -69,8 +69,11 @@ def mostrar():
     
         # Filtrar datos en el período seleccionado
         filtered_df = df1[(df1[col] >= pd.Timestamp(start_date)) & (df1[col] <= pd.Timestamp(end_date))]
+        # filtered_indices = filtered_df.index
+
         filtered_indices = list(set(test_idx) & set(filtered_df.index))
-        filtered_indices.sort()
+        filtered_df2 = filtered_df.loc[filtered_indices]
+        filtered_indices = filtered_df2.sort_values(col).index.tolist()
 
         if len(filtered_indices) == 0:
             st.warning("⚠️ No hay datos en el rango de fechas seleccionado.")
@@ -94,16 +97,38 @@ def mostrar():
 
         # 🔍 **Gráfico 2: Incertidumbre en Gaussian Process**
         if model_name in ["GaussianProcessRegressor"]:
-            plt.figure(figsize=(10, 5))
-            y_std = np.sqrt(model.predict(Xf, return_std=True)[1])
-            plt.fill_between(filtered_df.loc[filtered_indices, col], y_pred - y_std, y_pred + y_std, alpha=0.3, color="red", label='Incertidumbre')
-            plt.plot(filtered_df.loc[filtered_indices, col], yf, label="Real", color="blue", linestyle="dashed")
-            plt.plot(filtered_df.loc[filtered_indices, col], y_pred, label="Predicción", color="red")
-            plt.xlabel("Fecha")
-            plt.ylabel("Valor")
-            plt.title("Predicción con Incertidumbre")
+
+            feature_index = df1.columns.get_loc(col)
+            df_array = filtered_df2.to_numpy()
+            
+            ind_ = np.argsort(Xf[:,feature_index],axis=0).reshape(-1)
+            # se entrenó con datos escalados
+
+            scaler = MinMaxScaler(feature_range=(0, 1))
+            X_train_scaled = scaler.fit_transform(X_train)
+            X_test_scaled = scaler.transform(Xf)
+
+            scaler2 = MinMaxScaler(feature_range=(0, 1))
+            y_train_scaled = scaler2.fit_transform(y_train)
+            y_test_scaled = scaler2.transform(yf)
+
+            y_mean, y_std = model.predict(X_test_scaled[ind_], return_std=True)  # Predicted output from GPR
+            y_samples = model.sample_y(X_test[ind_], 5)
+
+            x_feature = X_test[ind_, feature_index]  # Choose a feature for plotting
+
+            plt.plot(filtered_df.loc[filtered_indices, col], y_mean, color="red", label="Predicción")
+
+            plt.fill_between(
+                filtered_df.loc[filtered_indices, col],
+                y_mean - 2 * y_std,
+                y_mean + 2 * y_std,
+                alpha=0.08,
+                color="black",
+                label=r"$\pm$ 2 desviación estándar",
+            )
+            plt.plot(filtered_df.loc[filtered_indices, col], y[test_idx][ind_], "--b", label="Real") #target ytest
             plt.legend()
-            plt.xticks(rotation=45)
             st.pyplot(plt)
 
             # 📊 **Gráfico 3: Barplot de Length Scale**

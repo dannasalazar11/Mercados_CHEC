@@ -99,7 +99,7 @@ def mostrar():
 
         # 🔍 **Gráfico 2: Incertidumbre en Gaussian Process**
         if model_name in ["GaussianProcessRegressor"]:
-
+            plt.figure(figsize=(10, 5))
             feature_index = df1.columns.get_loc(col)
             df_array = filtered_df2.to_numpy()
             

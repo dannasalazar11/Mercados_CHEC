@@ -1,41 +1,4 @@
 import streamlit as st
-import torch
-from sklearn.metrics import r2_score
-import matplotlib.pyplot as plt
-from pytorch_tabnet.tab_model import TabNetRegressor
-import numpy as np
-import joblib
-
-def my_r2_score_fn(y_pred, y_true):
-    total_variance = torch.var(y_true, unbiased=False)
-    unexplained_variance = torch.mean((y_true - y_pred) ** 2)
-    r2_score = unexplained_variance / total_variance
-    return r2_score
-
-class CustomTabNetRegressor(TabNetRegressor):
-    def __init__(self, *args, **kwargs):
-        super(CustomTabNetRegressor, self).__init__(*args, **kwargs)
-
-    def forward(self, X):
-        output, M_loss = self.network(X)
-        output = torch.relu(output)
-        return output, M_loss
-
-    def predict(self, X):
-        device = next(self.network.parameters()).device
-        if not isinstance(X, torch.Tensor):
-            X = torch.tensor(X, dtype=torch.float32)
-        X = X.to(device)
-        with torch.no_grad():
-            output, _ = self.forward(X)
-        return output.cpu().numpy()
-
-@st.cache_resource
-def load_model():
-    model = CustomTabNetRegressor()  # Instancia el modelo vacío
-    model.network.load_state_dict(torch.load("Modelos/custom_tabnet_model.pth", map_location=torch.device('cpu')))  # Cargar pesos
-    model.eval()  # Poner en modo evaluación
-    return model
 
 def mostrar():
     st.title("TabNet")
@@ -43,9 +6,21 @@ def mostrar():
     # Mostrar una imagen desde una ruta local
     st.image("Datos/Imagenes/tabnet.jpg", caption="Arquitectura de la TabNet", use_container_width=True)
 
-    st.write(f"{dir(TabNetRegressor)}, \n custom: {dir(CustomTabNetRegressor)}")
-    clf = load_model()
-    st.write("Modelo cargado")
+    st.markdown("""TabNet es un modelo de aprendizaje profundo diseñado específicamente para el 
+    procesamiento de datos tabulares, combinando la eficiencia de los modelos basados en árboles 
+    con la capacidad de representación de las redes neuronales profundas. Su arquitectura se basa 
+    en un mecanismo de atención secuencial que selecciona de manera adaptativa las características 
+    más relevantes en cada paso del proceso de aprendizaje, optimizando así la interpretación y el
+    rendimiento del modelo.\n
+    Una de sus principales ventajas es su capacidad de interpretabilidad, ya que permite 
+    visualizar qué variables han tenido mayor impacto en las predicciones, facilitando la 
+    comprensión del proceso de toma de decisiones. Además, TabNet es capaz de aprender 
+    directamente de los datos sin requerir una preprocesamiento extenso, lo que lo hace una opción 
+    eficiente y flexible en diversos ámbitos, como el sector financiero, la salud y la analítica 
+    empresarial.""")
+
+    st.markdown('<a href="https://colab.research.google.com/drive/1dDS0gcXYdsSh4iuUfptsn_S-uBmE7YNi?usp=sharing" target="_blank"><button style="padding:10px 20px;font-size:16px;">Ir a la página</button></a>', unsafe_allow_html=True)
+
 
 
   

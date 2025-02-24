@@ -12,16 +12,14 @@ def mostrar():
     modelos_path = "Modelos"
 
     # Lista de modelos no lineales
-    modelos_no_lineales = ["RandomForest", "GradientBoosting", "NeuralNetwork", "GaussianProcessRegressor", "GaussianProcessRegressor_Matern"]
+    modelos_no_lineales = ["RandomForest", "GradientBoosting", "NeuralNetwork", "GaussianProcessRegressor"]
 
     # Diccionario con descripciones de los modelos
     model_descriptions = {
         "RandomForest": "🌲 **Random Forest:** Algoritmo basado en múltiples árboles de decisión. Utiliza bagging para mejorar la precisión y reducir el sobreajuste.",
         "GradientBoosting": "🚀 **Gradient Boosting:** Modelo basado en árboles que construye secuencialmente modelos más fuertes corrigiendo los errores de los anteriores.",
         "NeuralNetwork": "🧠 **Red Neuronal:** Modelo Secuencial con capas densas, activaciones ReLU y optimizador Adam. Diseñado para capturar patrones complejos en los datos.",
-        "GaussianProcessRegressor": "📈 **Gaussian Process (RBF Kernel):** Método bayesiano para la regresión que mide la relación entre datos usando el kernel Radial Basis Function (RBF).",
-        "GaussianProcessRegressor_Matern": "📊 **Gaussian Process (Matern Kernel):** Variante del Gaussian Process que usa el kernel Matern, útil para datos con estructuras más complejas y suavidad ajustable."
-    }
+        "GaussianProcessRegressor": "📈 **Gaussian Process (RBF Kernel):** Método bayesiano para la regresión que mide la relación entre datos usando el kernel Radial Basis Function (RBF).",    }
 
     # Cargar solo los modelos no lineales en un diccionario
     models = {}
@@ -95,7 +93,7 @@ def mostrar():
         st.pyplot(plt)
 
         # 🔍 **Gráfico 2: Incertidumbre en Gaussian Process**
-        if model_name in ["GaussianProcessRegressor", "GaussianProcessRegressor_Matern"]:
+        if model_name in ["GaussianProcessRegressor"]:
             plt.figure(figsize=(10, 5))
             y_std = np.sqrt(model.predict(Xf, return_std=True)[1])
             plt.fill_between(filtered_df.loc[filtered_indices, col], y_pred - y_std, y_pred + y_std, alpha=0.3, color="red", label='Incertidumbre')

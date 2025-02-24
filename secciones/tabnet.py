@@ -11,9 +11,7 @@ def mostrar():
     con la capacidad de representación de las redes neuronales profundas. Su arquitectura se basa 
     en un mecanismo de atención secuencial que selecciona de manera adaptativa las características 
     más relevantes en cada paso del proceso de aprendizaje, optimizando así la interpretación y el
-    rendimiento del modelo.
-    
-    Una de sus principales ventajas es su capacidad de interpretabilidad, ya que permite 
+    rendimiento del modelo. \n Una de sus principales ventajas es su capacidad de interpretabilidad, ya que permite 
     visualizar qué variables han tenido mayor impacto en las predicciones, facilitando la 
     comprensión del proceso de toma de decisiones. Además, TabNet es capaz de aprender 
     directamente de los datos sin requerir una preprocesamiento extenso, lo que lo hace una opción 

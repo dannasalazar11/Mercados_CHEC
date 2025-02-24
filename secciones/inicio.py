@@ -11,7 +11,7 @@ def mostrar():
 
     ## 📌 SECCIÓN: Convocatorias_SICEP
     with st.container():
-        st.subheader("📌 Convocatorias SICEP")
+        st.subheader("Convocatorias SICEP")
         st.markdown("""
         Contiene información general de las convocatorias completas para la contratación de energía en el mercado mayorista, 
         incluyendo estado, fechas clave, cantidad de energía demandada y adjudicada, y precio.
@@ -30,7 +30,7 @@ def mostrar():
 
     ## 📌 SECCIÓN: Productos_Adj_SICEP
     with st.container():
-        st.subheader("📌 Productos Adjudicados SICEP")
+        st.subheader("Productos Adjudicados SICEP")
         st.markdown("""
         Desglosa cada convocatoria en productos específicos, detallando la energía contratada dentro de cada proceso, 
         permitiendo ver qué productos fueron adjudicados y cuáles no.
@@ -49,7 +49,7 @@ def mostrar():
 
     ## 🔄 SECCIÓN: Base de Datos Cruzada
     with st.container():
-        st.header("🔄 Base de Datos Cruzada")
+        st.header("Base de Datos Cruzada")
         st.markdown("""
         Cruzamos ambas bases de datos por el **código de la convocatoria** para relacionar las convocatorias con sus 
         productos específicos y así analizar si todas las convocatorias adjudicaron su energía o si hubo productos desiertos.
@@ -66,7 +66,7 @@ def mostrar():
 
     ## 🏆 SECCIÓN: Base de Datos Final (Preprocesada)
     with st.container():
-        st.header("🏆 Base de Datos Final (Cruzada y Preprocesada)")
+        st.header("Base de Datos Final (Cruzada y Preprocesada)")
         st.markdown("""
         <div style= padding: 10px; border-radius: 10px;'>
             <ul>

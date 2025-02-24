@@ -18,7 +18,7 @@ def mostrar():
     eficiente y flexible en diversos ámbitos, como el sector financiero, la salud y la analítica 
     empresarial.""")
 
-    st.markdown('<a href="https://colab.research.google.com/drive/1dDS0gcXYdsSh4iuUfptsn_S-uBmE7YNi?usp=sharing" target="_blank"><button style="padding:10px 20px;font-size:16px;">Ir a la página</button></a>', unsafe_allow_html=True)
+    st.markdown('<a href="https://colab.research.google.com/drive/1dDS0gcXYdsSh4iuUfptsn_S-uBmE7YNi?usp=sharing" target="_blank"><button style="padding:10px 20px;font-size:16px;">Ir al cuaderno de entrenamiento</button></a>', unsafe_allow_html=True)
 
 
 

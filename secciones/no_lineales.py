@@ -132,19 +132,6 @@ def mostrar():
             plt.legend()
             st.pyplot(plt)
 
-            # 📊 **Gráfico 3: Barplot de Length Scale**
-            length_scales = model.kernel_.get_params()['k2__length_scale']
-            if np.isscalar(length_scales):
-                length_scales = [length_scales]
-
-            feature_names = df_final.columns
-            plt.figure(figsize=(10, 5))
-            plt.bar(feature_names, 1/length_scales / np.max(1/length_scales), color='blue')
-            plt.xticks(rotation=90)
-            plt.xlabel('Características')
-            plt.title("Barplot de Length Scale Resultante")
-            st.pyplot(plt)
-
         # 📊 **Gráfico 4: Importancia de Características**
         if hasattr(model, "feature_importances_"):
             importances = model.feature_importances_

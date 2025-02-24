@@ -127,7 +127,7 @@ def mostrar():
                 y_mean + 1 * y_std,
                 alpha=0.08,
                 color="black",
-                label=r"$\pm$ 2 desviación estándar",
+                label=r"$\pm$ desviación estándar",
             )
             plt.plot(filtered_df.loc[filtered_indices, col], y[test_idx][ind_], "--b", label="Real") #target ytest
             plt.legend()

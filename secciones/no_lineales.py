@@ -121,8 +121,8 @@ def mostrar():
 
             plt.fill_between(
                 filtered_df.loc[filtered_indices, col],
-                y_mean - 2 * y_std,
-                y_mean + 2 * y_std,
+                y_mean - 1 * y_std,
+                y_mean + 1 * y_std,
                 alpha=0.08,
                 color="black",
                 label=r"$\pm$ 2 desviación estándar",

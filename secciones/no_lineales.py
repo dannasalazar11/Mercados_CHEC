@@ -116,7 +116,7 @@ def mostrar():
                 y_mean_real + 1 * y_std_real,
                 alpha=0.08,
                 color="black",
-                label=r"Intervalo de confianza",
+                label=r"Intervalo de confianza (1 std)",
             )
             plt.plot(x_feature, yf_real[ind_], "--b", label="Real") #target ytest
             plt.xlabel("Fecha")

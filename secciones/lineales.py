@@ -101,16 +101,19 @@ def plot_predictions(df1, column_selector, start_date, end_date, model_selector,
         st.pyplot(plt)
 
         # 📊 **Gráfico 2: Coeficientes del Modelo**
-        if hasattr(model, "coef_"):
+        if model_name == "ElasticNet":
+                coef = model[-1].coef_
+        else:
             coef = model.coef_
-            feature_names = df_final.columns if len(df_final.columns) == len(coef) else np.arange(len(coef))
+            
+        feature_names = df_final.columns if len(df_final.columns) == len(coef) else np.arange(len(coef))
 
-            plt.figure(figsize=(10, 5))
-            plt.barh(feature_names, np.abs(coef), color="blue")
-            plt.xlabel("Valor del coeficiente")
-            plt.ylabel("Características")
-            plt.title(f"Importancia de Características ({model_name})")
-            st.pyplot(plt)
+        plt.figure(figsize=(10, 5))
+        plt.barh(feature_names, np.abs(coef), color="blue")
+        plt.xlabel("Valor del coeficiente")
+        plt.ylabel("Características")
+        plt.title(f"Importancia de Características ({model_name})")
+        st.pyplot(plt)
 
     else:
         st.error("⚠️ Modelo no encontrado o datos incorrectos.")

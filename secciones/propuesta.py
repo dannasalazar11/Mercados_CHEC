@@ -14,7 +14,7 @@ def mostrar():
     st.markdown("---")
 
     # Datos y Entrenamiento
-    st.header("📊 Datos y Entrenamiento")
+    st.header("Datos y Entrenamiento")
     st.markdown(
         """
         - **Datos Históricos de SICEP**: Se entrenará el modelo utilizando la información histórica de convocatorias, precios, características de los productos y adjudicaciones anteriores.
@@ -33,7 +33,7 @@ def mostrar():
     st.markdown("---")
 
     # Objetivos Específicos
-    st.header("🎯 Objetivos Específicos")
+    st.header("Objetivos Específicos")
     st.markdown(
         """
         1. **Recopilar y limpiar** la información histórica de convocatorias y Adendas, garantizando la calidad de los datos.
@@ -47,7 +47,7 @@ def mostrar():
     st.markdown("---")
 
     # Resultados Esperados
-    st.header("🚀 Resultados Esperados")
+    st.header("Resultados Esperados")
     st.markdown(
         """
         - **Optimización de precios por producto**, incrementando la adjudicación exitosa.

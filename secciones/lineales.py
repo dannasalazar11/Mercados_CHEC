@@ -4,6 +4,7 @@ import numpy as np
 import pandas as pd
 import matplotlib.pyplot as plt
 import streamlit as st
+import pickle
 
 def mostrar():
     st.title("📈 Modelos de Predicción Clásicos Lineales")
@@ -82,13 +83,16 @@ def plot_predictions(df1, column_selector, start_date, end_date, model_selector,
         model = models[model_name]
         y_pred = model.predict(Xf)
 
+        with open("Modelos/scaler_value.pkl", 'rb') as f:
+            scaler = pickle.load(f)
+
         # 📌 Alinear las predicciones con las fechas correctas
         y_pred_df = pd.DataFrame(y_pred, index=filtered_df.loc[filtered_indices, col], columns=["Predicción"])
 
         # 📊 **Gráfico 1: Predicción vs Real**
         plt.figure(figsize=(10, 5))
-        plt.plot(filtered_df.loc[filtered_indices, col], yf, label="Real", color="blue", linestyle="dashed")
-        plt.plot(filtered_df.loc[filtered_indices, col], y_pred, label="Predicción", color="red")
+        plt.plot(filtered_df.loc[filtered_indices, col], scaler.inverse_transform(yf.reshape(-1,1)), label="Real", color="blue", linestyle="dashed")
+        plt.plot(filtered_df.loc[filtered_indices, col], scaler.inverse_transform(y_pred.reshape(-1,1)), label="Predicción", color="red")
         plt.xlabel("Fecha")
         plt.ylabel("Valor")
         plt.title(f"Predicción vs Real ({model_name})")

@@ -56,98 +56,68 @@ def mostrar():
     start_date = st.date_input("📆 Fecha de Inicio", min_date, min_value=min_date, max_value=max_date)
     end_date = st.date_input("📆 Fecha de Fin", max_date, min_value=min_date, max_value=max_date)
 
-    def plot_predictions(df1, column_selector, start_date, end_date, model_selector, models):
+    # Cargar datos auxiliares
+    for nombre in ['X', 'y', 'X_train', 'X_test', 'y_train', 'y_test', 'train_idx', 'test_idx', 'ind']:
+        globals()[nombre] = np.load(f'Datos/Arreglos/{nombre}.npy')
 
-        for nombre in ['X', 'y', 'X_train', 'X_test', 'y_train', 'y_test', 'train_idx', 'test_idx', 'ind']:
-            globals()[nombre] = np.load(f'Datos/Arreglos/{nombre}.npy')
+    df_final = pd.read_excel('Datos/df_final.xlsx')
 
-        df_final = pd.read_excel('Datos/df_final.xlsx')
-
+    def plot_predictions(df1, column_selector, date_start, date_end, model_selector, models):
         col = column_selector
-        start_date = pd.Timestamp(start_date)
-        end_date = pd.Timestamp(end_date)
+        start_date = pd.Timestamp(date_start)
+        end_date = pd.Timestamp(date_end)
         model_name = model_selector
-    
-        # Filtrar datos en el período seleccionado
-        filtered_df = df1[(df1[col] >= pd.Timestamp(start_date)) & (df1[col] <= pd.Timestamp(end_date))]
-        # filtered_indices = filtered_df.index
-
+        
+        filtered_df = df1[(df1[col] >= start_date) & (df1[col] <= end_date)]
         filtered_indices = list(set(test_idx) & set(filtered_df.index))
-        filtered_df2 = filtered_df.loc[filtered_indices]
-        filtered_indices = filtered_df2.sort_values(col).index.tolist()
-
+        filtered_df = filtered_df.loc[filtered_indices].sort_values(col)
+        filtered_indices = filtered_df.index.tolist()
+        
         if len(filtered_indices) == 0:
             st.warning("⚠️ No hay datos en el rango de fechas seleccionado.")
             return
-
+        
         Xf = X[filtered_indices]
         yf = y[filtered_indices]
         model = models[model_name]
         y_pred = model.predict(Xf)
+        r2 = round(r2_score(yf, y_pred), 2)
 
-        # **Gráfico 1: Predicción vs Real**
-        if model_name != "GaussianProcessRegressor":
-            plt.figure(figsize=(10, 5))
-            plt.plot(filtered_df.loc[filtered_indices, col], yf, label="Real", color="blue", linestyle="dashed")
-            plt.plot(filtered_df.loc[filtered_indices, col], y_pred, label="Predicción", color="red")
-            plt.xlabel("Fecha")
-            plt.ylabel("Valor")
-            plt.title(f"📊 Predicción vs Real ({model_name})")
-            plt.legend()
-            plt.xticks(rotation=45)
-            st.pyplot(plt)
-
-        # 🔍 **Gráfico 2: Incertidumbre en Gaussian Process**
-        if model_name in ["GaussianProcessRegressor"]:
+        if model_name == "GaussianProcessRegressor":
             feature_index = df_final.columns.get_loc(col)
-            df_array = filtered_df2.to_numpy()
-
-            ind_ = np.argsort(Xf[:,feature_index],axis=0).reshape(-1)
-            # se entrenó con datos escalados
-
-            scaler = MinMaxScaler(feature_range=(0, 1))
-            X_train_scaled = scaler.fit_transform(X_train)
-            X_test_scaled = scaler.transform(Xf)
-
-            # scaler2 = MinMaxScaler(feature_range=(0, 1))
-            # y_train_scaled = scaler2.fit_transform(y_train)
-            # y_test_scaled = scaler2.transform(yf)
-
-            y_mean, y_std = model.predict(X_test_scaled[ind_], return_std=True)  # Predicted output from GPR
-
-            r2=round(r2_score(yf,y_mean),2)
-
-
-            x_feature = filtered_df.loc[filtered_indices, col]  # Choose a feature for plotting
-
-            plt.plot(x_feature, y_mean, color="red", label="Predicción")
-
-            plt.fill_between(
-                x_feature,
-                y_mean - 1 * y_std,
-                y_mean + 1 * y_std,
-                alpha=0.08,
-                color="black",
-                label=r"Intervalo de confianza",
-            )
-            plt.plot(x_feature, yf[ind_], "--b", label="Real") #target ytest
+            ind_ = np.argsort(Xf[:, feature_index]).reshape(-1)
+            scaler = MinMaxScaler()
+            X_test_scaled = scaler.fit_transform(Xf)
+            y_mean, y_std = model.predict(X_test_scaled[ind_], return_std=True)
+            
+            plt.figure(figsize=(10, 5))
+            plt.plot(filtered_df[col], y_mean, color="red", label="Predicción")
+            plt.fill_between(filtered_df[col], y_mean - y_std, y_mean + y_std, alpha=0.1, color="gray", label="Intervalo de confianza")
+            plt.plot(filtered_df[col], yf[ind_], "--b", label="Real")
             plt.xlabel("Fecha")
             plt.ylabel("Valor")
-            plt.title(f"Predicción vs Real (R2 = {np.round(r2,1)})")
+            plt.title(f"Predicción vs Real (R² = {r2})")
             plt.legend()
             st.pyplot(plt)
-
-        # 📊 **Gráfico 4: Importancia de Características**
-        if hasattr(model, "feature_importances_"):
-            importances = model.feature_importances_
-            feature_names = df_final.columns
+        
+        else:
             plt.figure(figsize=(10, 5))
-            plt.barh(feature_names, importances, color="green")
-            plt.xlabel("Importancia")
-            plt.ylabel("Características")
-            plt.title(f"Importancia de Características ({model_name})")
+            plt.plot(filtered_df[col], yf, label="Real", color="blue", linestyle="dashed")
+            plt.plot(filtered_df[col], y_pred, label="Predicción", color="red")
+            plt.xlabel("Fecha")
+            plt.ylabel("Valor")
+            plt.title(f"Predicción vs Real (R² = {r2})")
+            plt.legend()
             st.pyplot(plt)
+            
+            if hasattr(model, "feature_importances_"):
+                plt.figure(figsize=(8, 5))
+                plt.bar(df_final.columns, model.feature_importances_, color="blue")
+                plt.xlabel("Características")
+                plt.ylabel("Importancia")
+                plt.title("Importancia de Características")
+                plt.xticks(rotation=90)
+                st.pyplot(plt)
 
-    # Botón para generar la gráfica
     if st.button("📈 Generar Gráfica"):
-        plot_predictions(df1, column_selector, start_date, end_date, model_selector, models)
+        plot_predictions(df1, column_selector, date_start, date_end, model_selector, models)

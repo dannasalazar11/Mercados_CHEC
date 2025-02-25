@@ -6,6 +6,7 @@ import matplotlib.pyplot as plt
 import streamlit as st
 from sklearn.preprocessing import MinMaxScaler
 from sklearn.metrics import r2_score
+import pickle
 
 def mostrar():
     st.title("📈 Modelos de Predicción Clásicos No Lineales")

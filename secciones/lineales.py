@@ -94,7 +94,7 @@ def plot_predictions(df1, column_selector, start_date, end_date, model_selector,
         plt.plot(filtered_df.loc[filtered_indices, col], scaler.inverse_transform(yf.reshape(-1,1)), label="Real", color="blue", linestyle="dashed")
         plt.plot(filtered_df.loc[filtered_indices, col], scaler.inverse_transform(y_pred.reshape(-1,1)), label="Predicción", color="red")
         plt.xlabel("Fecha")
-        plt.ylabel("Valor")
+        plt.ylabel("Valor (COP/kWh)")
         plt.title(f"Predicción vs Real ({model_name})")
         plt.legend()
         plt.xticks(rotation=45)
@@ -106,7 +106,7 @@ def plot_predictions(df1, column_selector, start_date, end_date, model_selector,
             feature_names = df_final.columns if len(df_final.columns) == len(coef) else np.arange(len(coef))
 
             plt.figure(figsize=(10, 5))
-            plt.barh(feature_names, coef, color="purple")
+            plt.barh(feature_names, np.abs(coef), color="blue")
             plt.xlabel("Valor del coeficiente")
             plt.ylabel("Características")
             plt.title(f"Importancia de Características ({model_name})")

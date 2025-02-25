@@ -46,6 +46,9 @@ def mostrar():
     df1 = pd.read_excel('Datos/df_imputado_original.xlsx')
     df1[fecha_columns] = df1[fecha_columns].apply(pd.to_datetime, errors='coerce')
 
+    with open("Modelos/scaler_value.pkl", 'rb') as f:
+        scaler = pickle.load(f)
+
     # Selección de columna de fecha
     column_selector = st.selectbox("📅 Selecciona la columna de fecha", fecha_columns)
 
@@ -83,31 +86,51 @@ def mostrar():
         model = models[model_name]
         y_pred = model.predict(Xf)
         r2 = round(r2_score(yf, y_pred), 2)
+        y_pred_df = pd.DataFrame(y_pred, index=filtered_df.loc[filtered_indices, col], columns=["Predicción"])
+
 
         if model_name == "GaussianProcessRegressor":
             feature_index = df_final.columns.get_loc(col)
             ind_ = np.argsort(Xf[:, feature_index]).reshape(-1)
-            scaler = MinMaxScaler()
-            X_test_scaled = scaler.fit_transform(Xf)
-            y_mean, y_std = model.predict(X_test_scaled[ind_], return_std=True)
+
+            scaler2 = MinMaxScaler(feature_range=(0, 1))
+            X_train_scaled = scaler2.fit_transform(X_train)
+            X_test_scaled = scaler2.transform(Xf)
+
+            y_mean, y_std = model.predict(X_test_scaled[ind_], return_std=True)  # Predicted output from GPR
             
-            plt.figure(figsize=(10, 5))
-            plt.plot(filtered_df[col], y_mean, color="red", label="Predicción")
-            plt.fill_between(filtered_df[col], y_mean - y_std, y_mean + y_std, alpha=0.1, color="gray", label="Intervalo de confianza")
-            plt.plot(filtered_df[col], yf[ind_], "--b", label="Real")
+            y_mean_real = scaler.inverse_transform(y_mean.reshape(-1,1)).reshape(-1)
+            y_std_real = scaler.inverse_transform(y_std.reshape(-1,1)).reshape(-1)
+            yf_real = scaler.inverse_transform(yf).reshape(-1)
+            r2=round(r2_score(yf,y_mean),2)
+
+
+            x_feature = filtered_df.loc[filtered_indices, col]  # Choose a feature for plotting
+
+            plt.plot(x_feature, y_mean_real, color="red", label="Predicción")
+
+            plt.fill_between(
+                x_feature,
+                y_mean_real - 1 * y_std_real,
+                y_mean_real + 1 * y_std_real,
+                alpha=0.08,
+                color="black",
+                label=r"Intervalo de confianza",
+            )
+            plt.plot(x_feature, yf_real[ind_], "--b", label="Real") #target ytest
             plt.xlabel("Fecha")
-            plt.ylabel("Valor")
-            plt.title(f"Predicción vs Real (R² = {r2})")
+            plt.ylabel("Valor (COP/kWh)")
+            plt.title(f"Predicción vs Real (R2 = {np.round(r2,1)})")
             plt.legend()
             st.pyplot(plt)
         
         else:
             plt.figure(figsize=(10, 5))
-            plt.plot(filtered_df[col], yf, label="Real", color="blue", linestyle="dashed")
-            plt.plot(filtered_df[col], y_pred, label="Predicción", color="red")
+            plt.plot(filtered_df.loc[filtered_indices, col], scaler.inverse_transform(y_pred_df.to_numpy().reshape(-1,1)), label="Predicción", color="red")
+            plt.plot(filtered_df.loc[filtered_indices, col], scaler.inverse_transform(yf.reshape(-1,1)), label="Real", color="blue", linestyle="dashed")
             plt.xlabel("Fecha")
-            plt.ylabel("Valor")
-            plt.title(f"Predicción vs Real (R² = {r2})")
+            plt.ylabel("Valor (COP/kWh)")
+            plt.title(f"Predicción vs Real (R2 = {r2})")
             plt.legend()
             st.pyplot(plt)
             

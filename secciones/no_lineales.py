@@ -120,4 +120,4 @@ def mostrar():
                 st.pyplot(plt)
 
     if st.button("📈 Generar Gráfica"):
-        plot_predictions(df1, column_selector, date_start, date_end, model_selector, models)
+        plot_predictions(df1, column_selector, start_date, end_date, model_selector, models)
